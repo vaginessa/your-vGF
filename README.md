@@ -1,2 +1,2 @@
 # python-educational-game
-Time to learn
+# Time to learn
