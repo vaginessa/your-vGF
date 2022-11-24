@@ -1,6 +1,8 @@
 # virtual girlfriend with reminders
 # Time to get laid
 
+## pls remember to comment your code since it's a colllab project thank you
+
 ## https://www.youtube.com/watch?v=8qUJ9a_3zSQ
 
 ### Modules
