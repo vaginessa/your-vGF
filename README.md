@@ -52,5 +52,3 @@ Zgui will show different sprites and responses based on stats and response.
       <li>Overall UI/UX of the app</li>
     </ul>
 </ul>
-
-test
