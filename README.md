@@ -1,2 +1,2 @@
-# python-educational-game
-# Time to learn
+# solve an interesting problem
+# Time to solve
