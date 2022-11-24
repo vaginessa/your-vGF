@@ -16,7 +16,7 @@
  </ol>
 
 ### Module descriptions:
-Time controls happiness/sadness metre, and <3 metere. The metres drops automatically as time goes on.
+Time controls happiness/sadness metre, and <3 metre. The metres drops automatically as time goes on.
 
 Able to set reminders in the game, which affects the two metres, + if reminders are met, - if not.
 
@@ -29,7 +29,7 @@ Zgui will show different sprites and responses based on stats and response.
 <ul>
   <li>Write dialogues: All</li>
     <ul>
-      <li>Add dialogue to be used [here] (https://github.com/AreiousX/virtual-gf-with-reminders/tree/main/dialogues)</li>
+      <li>Add dialogue to be used [here](/dialogues/readme.md)</li>
     </ul>
   <li>Creative director: Ed</li>
     <ul>
