@@ -1,2 +1,2 @@
-# solve an interesting problem
-# Time to solve
+# virtual girlfriend with reminders
+# Time to get laid
