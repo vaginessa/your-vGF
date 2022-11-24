@@ -9,7 +9,7 @@
   <li><3</li>
   <li>Reminder</li>
   <li>Zgui Duy</li>
-  <li>Time</li
+  <li>Time</li>
   <li>Random(to be inplimeneted with reminder and time)</li>
  </ol>
 
