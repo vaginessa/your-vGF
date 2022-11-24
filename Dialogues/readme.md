@@ -1,4 +1,4 @@
-## Add your idea here to be added as dialogue in the game, some can be just random information/chat, some should be questions/responses.
+## Add your ideas here to be added as dialogue in the game
 
 ### Small talk
 
