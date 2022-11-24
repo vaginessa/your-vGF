@@ -29,7 +29,7 @@ Zgui will show different sprites and responses based on stats and response.
 <ul>
   <li>Write dialogues: All</li>
     <ul>
-      <li>Add dialogue to be used [here](https://github.com/AreiousX/virtual-gf-with-reminders/tree/main/dialogues)</li>
+      <li>Add dialogue to be used [here] (https://github.com/AreiousX/virtual-gf-with-reminders/tree/main/dialogues)</li>
     </ul>
   <li>Creative director: Ed</li>
     <ul>
