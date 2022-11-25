@@ -1,5 +1,5 @@
 # virtual girlfriend with reminders
-# Time to get laid
+## Time to get laid
 
 ## pls remember to comment your code since it's a collab project thank you
 
