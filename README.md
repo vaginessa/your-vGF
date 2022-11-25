@@ -10,7 +10,7 @@
 1. Happiness/sadness
 2. <3
 3. Reminder
-4. Zgui Duy
+4. zGUI<sup>TM</sup>
 5. Time
 6. Random (to be implemented with reminder and time)
 
@@ -29,12 +29,12 @@ zGUI will show different sprites and responses based on stats and response.
 - Write dialogues: All
   - Add dialogue to be used [here](/dialogues/readme.md)
 - Creative director: Ed
-  - Sprites & zGUI integration
+  - Sprites & zGUI<sup>TM</sup> integration
 - Time & random module: Haowen
   - Time module to adjust stat metres and trigger events, random module to trigger dialogues
 - Reminder module: Yaromir
   - Module to handle all reminders and adjust metres
 - Stat metres
   - Module to keep track of main stats and trigger events
-- zGUI module
+- zGUI<sup>TM</sup> module
   - Overall UI/UX of the app
