@@ -34,7 +34,7 @@ zGUI will show different sprites and responses based on stats and response.
   - Time module to adjust stat metres and trigger events, random module to trigger dialogues
 - Reminder module: Yaromir
   - Module to handle all reminders and adjust metres
-- Stat metres
+- Stat metres: Zuey
   - Module to keep track of main stats and trigger events
-- zGUI<sup>TM</sup> module
+- zGUI<sup>TM</sup> module: Sarah
   - Overall UI/UX of the app
