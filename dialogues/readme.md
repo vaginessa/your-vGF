@@ -33,6 +33,7 @@
   <li>Its your fault... Its always your fault.</li>
   <li>It was just a joke, can’t you take a joke?</li>
   <li>There is something seriously wrong with you.</li>
+  <li>Do you even love me?!</li>
   <li>This is how you treat me after everything I’ve done for you?</li>
 </ul> 
 
