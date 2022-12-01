@@ -2,6 +2,7 @@
 ## Time to get laid
 
 ## pls remember to comment your code since it's a collab project thank you
+## vGF.py is the main file that other files should be merged with
 
 ## https://www.youtube.com/watch?v=8qUJ9a_3zSQ
 
