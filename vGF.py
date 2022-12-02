@@ -1,6 +1,7 @@
 import tkinter
 import tkinter.messagebox
 from tkinter.ttk import Progressbar
+from tkinter import *
 from PIL import Image, ImageTk
 import time
 from random import *
@@ -10,11 +11,36 @@ import os
 root = tkinter.Tk()
 root.title("vGF - zGUI™")
 
+#For images to pop out
+
+win = Tk()
+win.title("Finish?")
+win.geometry("500x500")
+frame = Frame(win, width=600, height=400)
+frame.pack()
+frame.place(anchor='center', relx=0.5, rely=0.5)
+
 # Assets 
 
 heart_sprite = Image.open('./images/heart_sprite.png')
 
 sprites = {"happy": './images/.png' , "sad": './images/.png' , "angry": './images/.png'} # List of sprite directories
+
+# Assets for Ame
+
+selfie_image1 = r"./resources/ame/Selfies"
+disappointed_image1 = r"./resources/ame/Disappointed"
+asking_image1 = r"./resources/ame/Asking"
+happy_image1 = r"./resources/ame/Happy"
+pillow_image1 = r"./resources/ame/Pillow"
+
+#Assets for Kangel
+
+selfie_image = r"./resources/kangel/Selfies"
+disappointed_image = r"./resources/kangel/Disappointed"
+asking_image = r"./resources/kangel/Asking"
+happy_image = r"./resources/kangel/Happy"
+yandere_image = r"./resources/kangel/Yandere"
 
 #class for character
 class Ame:
@@ -135,6 +161,55 @@ def fail_task():
 
 # GUI
 
+#Images and choices whether finished task
+
+def beginning():
+    global img
+    r = random.choice(os.listdir(asking_image))
+    img=ImageTk.PhotoImage(Image.open(os.path.join(asking_image, r)))
+    label = Label(frame, image = img)
+    label.pack()
+    button = Button(win, text='Did you finish?', command=open_img).pack()
+ 
+def open_img():
+    clear_frame()
+    btn1=Button(win, text="Yes!", fg='blue', command =btn1_clicked)
+    btn1.place(x=80, y=50)
+    btn2=Button(win, text="No!", fg='red', command =btn2_clicked)
+    btn2.place(x=360, y=50)
+
+
+def btn1_clicked():
+    clear_frame()
+    win.title("Good boy! ^w^")
+    selfie()
+
+
+
+def btn2_clicked():
+    clear_frame()
+    win.title("How dare you...")
+    disappointed()
+
+def selfie():
+    global img
+    r = random.choice(os.listdir(selfie_image))
+    img=ImageTk.PhotoImage(Image.open(os.path.join(selfie_image, r)))
+    label = Label(frame, image = img)
+    label.pack()
+
+def disappointed():
+    global img
+    r = random.choice(os.listdir(disappointed_image))
+    img=ImageTk.PhotoImage(Image.open(os.path.join(disappointed_image, r)))
+    label = Label(frame, image = img)
+    label.pack()
+
+
+def clear_frame():
+   for widgets in frame.winfo_children():
+      widgets.destroy()
+
 # Mood Bar Frame
 
 mood_frame = tkinter.Frame(root)
@@ -180,6 +255,8 @@ failed_task_button = tkinter.Button(root, text="Task failed", width=48, command=
 failed_task_button.pack()
 
 #Scrollbar
+
+
 
 
 

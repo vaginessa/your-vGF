@@ -32,11 +32,18 @@ class Ame:
             #trigger event
             print("happiness is at 100")
             self._happiness = 100
+        if ame._happiness <75 and happiness >= 75:
+            #trigger event
+            print("happiness is > 75")
+            self._happiness = happiness
+        if happiness <= 25:
+            #trigger event
+            print("happiness is < 25")
+            self._happiness = happiness
         elif happiness <= 0:
             #trigger event
             print("happiness is at 0")
             self._happiness = 0
-        self._happiness = happiness
             
     @property
     def affection(self):
@@ -52,7 +59,8 @@ class Ame:
             #trigger event
             print("affection is at 0")
             self._affection = 0
-        self._affection = affection
+        else:
+            self._affection = affection
 
 
 
@@ -68,6 +76,8 @@ def main():
             happiness = data["happiness"]
             affection = data["affection"]
             ame = Ame(name, happiness, affection)
+            ame.happiness = 1000
+            print(f"Name is {ame.name}, happiness is {ame.happiness}, affection is {ame.affection}")
     else:
         init_ame()
 
