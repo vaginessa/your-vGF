@@ -94,6 +94,7 @@ rewards = {'trash': 1, 'homework': 2, 'project': 5, 'work': 2, 'call': 1, 'book'
 # Logic
 
 def main():
+    root.mainloop() # MOVED
     global ame
     #check if a saved file exists
     if check_save():
@@ -386,5 +387,3 @@ failed_task_button.pack()
 if __name__ == "__main__":
 
     main()
-
-    root.mainloop() # MOVED
