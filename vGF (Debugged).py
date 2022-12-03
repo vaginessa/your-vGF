@@ -68,24 +68,36 @@ class Ame:
         # self._happiness = happiness
 
         if happiness >= 100:
-            #Trigger Event
+            r = random.choice(os.listdir(happy_image))
+            img=ImageTk.PhotoImage(os.path.join(happy_image, r))
+            happy100 = tkinter.Label(mood_frame, image=img)
+            happy100.pack(side=tkinter.LEFT)
     
             print("happiness is at 100")
             self._happiness  = 100
 
         elif ame._happiness <75 and happiness >= 75:
-            #Trigger Event
+            r = random.choice(os.listdir(happy_image))
+            img=ImageTk.PhotoImage(os.path.join(happy_image, r))
+            happy100 = tkinter.Label(mood_frame, image=img)
+            happy100.pack(side=tkinter.LEFT)
             
             print("happiness is > 75")
             self._happiness = happiness
 
         elif happiness <= 25:
-            #Trigger Event
+            r = random.choice(os.listdir(happy_image))
+            img=ImageTk.PhotoImage(os.path.join(happy_image, r))
+            happy100 = tkinter.Label(mood_frame, image=img)
+            happy100.pack(side=tkinter.LEFT)
             
             print("happiness is < 25")
             self._happiness = happiness
         elif happiness <= 0:
-            #Trigger Event
+            r = random.choice(os.listdir(happy_image))
+            img=ImageTk.PhotoImage(os.path.join(happy_image, r))
+            happy100 = tkinter.Label(mood_frame, image=img)
+            happy100.pack(side=tkinter.LEFT)
             
             print("happiness is at 0")
             self._happiness = 0
@@ -227,7 +239,9 @@ def fail_task():
         top = Toplevel(root)
         top.title(random.choice(title_list))
         amedisappointed()
-    button = Button(top, text='Sorry...', command=top.destroy).pack()
+
+    response_list = ['Sorry..', "It won't happen again...", "I'm sorry...", "Please don't leave..."]
+    button = Button(top, text=random.choice(response_list), command=top.destroy).pack()
         
 
 # GUI
@@ -244,15 +258,19 @@ def popupimage():
     #For images to pop out
     global img
     global top
-    top = Toplevel(root)
-    top.title("Finish?")
     if ame.happiness >= 50:
+        top = Toplevel(root)
+        ask_list = ['Did my baby finish their work?', '^w^ Baby finished?', 'My cutie baby finished yet~?', "<3 Baby I'm lonely~ Done yet~?"]
+        top.title(random.choice(ask_list))
         r = random.choice(os.listdir(asking_image))
         img=ImageTk.PhotoImage(Image.open(os.path.join(asking_image, r)))
         label = Label(top, image = img)
         label.pack()
 
     elif ame.happiness <50:
+        top = Toplevel(root)
+        ask_list = ['Huh? You finished?', 'Finished?', "Hm.. You're done?", "Done?"]
+        top.title(random.choice(ask_list))
         r = random.choice(os.listdir(asking_image1))
         img=ImageTk.PhotoImage(Image.open(os.path.join(asking_image1, r)))
         label = Label(top, image = img)
@@ -268,13 +286,17 @@ def open_img():
 
 def btn1_clicked():
     topclear_frame()
-    happy_list1 = ['Good boy! ^w^', 'You cutie! A reward for you! uwu', 'I love you~! <3', 'My capable lover~ Kyaa~~']
+    happy_list1 = ['Good boy! ^w^', 'You cutie! A reward for you! uwu', 'I love you~! <3', 'My capable lover~ Kyaa~~', 'Come ere my baby~!', 'Awww~ Lookie you~']
     top.title(random.choice(happy_list1))
     if ame.happiness >= 50:
         kangelselfie()
     
     elif ame.happiness <50:
         ameselfie()
+
+
+    response_list = ['Hehe~', 'I love you~', 'Thanks baby~', 'Wubbie chu~', '>;3 Yay~']
+    button = Button(top, text=random.choice(response_list), command=top.destroy).pack()
 
 
 
@@ -288,6 +310,9 @@ def btn2_clicked():
         kangeldisappointed()
     elif ame.happiness <50:
         amedisappointed()
+        
+    response_list = ['Sorry..', "It won't happen again...", "I'm sorry...", "Please don't leave..."]
+    button = Button(top, text=random.choice(response_list), command=top.destroy).pack()
 
 #Images for Ame
 
