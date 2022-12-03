@@ -11,18 +11,10 @@ import os
 root = tkinter.Tk()
 root.title("vGF - zGUI™")
 
-#For images to pop out
-
-win = Tk()
-win.title("Finish?")
-win.geometry("500x500")
-frame = Frame(win, width=600, height=400)
-frame.pack()
-frame.place(anchor='center', relx=0.5, rely=0.5)
 
 # Assets 
 
-heart_sprite = Image.open('./images/heart_sprite.png')
+heart_sprite = Image.open('./resources/heart_sprite.png')
 
 sprites = {"happy": './images/.png' , "sad": './images/.png' , "angry": './images/.png'} # List of sprite directories
 
@@ -163,6 +155,18 @@ def fail_task():
 
 #Images and choices whether finished task
 
+
+def popup():
+    #For images to pop out
+    global win
+    global frame
+    win = Tk()
+    win.title("Finish?")
+    win.geometry("500x500")
+    frame = Frame(win, width=600, height=400)
+    frame.pack()
+    frame.place(anchor='center', relx=0.5, rely=0.5)
+    
 def beginning():
     global img
     r = random.choice(os.listdir(asking_image))
@@ -182,29 +186,89 @@ def open_img():
 def btn1_clicked():
     clear_frame()
     win.title("Good boy! ^w^")
-    selfie()
+    ameselfie()
 
 
 
 def btn2_clicked():
     clear_frame()
     win.title("How dare you...")
-    disappointed()
+    amedisappointed()
 
-def selfie():
+#Images for Ame
+
+def ameselfie():
+    global img
+    r = random.choice(os.listdir(selfie_image1))
+    img=ImageTk.PhotoImage(Image.open(os.path.join(selfie_image1, r)))
+    label = Label(frame, image = img)
+    label.pack()
+
+def amedisappointed():
+    global img
+    r = random.choice(os.listdir(disappointed_image1))
+    img=ImageTk.PhotoImage(Image.open(os.path.join(disappointed_image1, r)))
+    label = Label(frame, image = img)
+    label.pack()
+
+def ameasking():
+    global img
+    r = random.choice(os.listdir(asking_image1))
+    img=ImageTk.PhotoImage(Image.open(os.path.join(asking_image1, r)))
+    label = Label(frame, image = img)
+    label.pack()
+
+def amehappy():
+    global img
+    r = random.choice(os.listdir(happy_image1))
+    img=ImageTk.PhotoImage(Image.open(os.path.join(happy_image1, r)))
+    label = Label(frame, image = img)
+    label.pack()
+
+def amepillow():
+    global img
+    r = random.choice(os.listdir(pillow_image1))
+    img=ImageTk.PhotoImage(Image.open(os.path.join(pillow_image1, r)))
+    label = Label(frame, image = img)
+    label.pack()
+
+#Images for Kangel
+def kangelselfie():
     global img
     r = random.choice(os.listdir(selfie_image))
     img=ImageTk.PhotoImage(Image.open(os.path.join(selfie_image, r)))
     label = Label(frame, image = img)
     label.pack()
 
-def disappointed():
+def kangeldisappointed():
     global img
     r = random.choice(os.listdir(disappointed_image))
     img=ImageTk.PhotoImage(Image.open(os.path.join(disappointed_image, r)))
     label = Label(frame, image = img)
     label.pack()
 
+def kangelasking():
+    global img
+    r = random.choice(os.listdir(asking_image))
+    img=ImageTk.PhotoImage(Image.open(os.path.join(asking_image, r)))
+    label = Label(frame, image = img)
+    label.pack()
+
+def kangelhappy():
+    global img
+    r = random.choice(os.listdir(happy_image))
+    img=ImageTk.PhotoImage(Image.open(os.path.join(happy_image, r)))
+    label = Label(frame, image = img)
+    label.pack()
+
+def kangelyandere():
+    global img
+    r = random.choice(os.listdir(yandere_image))
+    img=ImageTk.PhotoImage(Image.open(os.path.join(yandere_image, r)))
+    label = Label(frame, image = img)
+    label.pack()
+
+#Clear Frame Command
 
 def clear_frame():
    for widgets in frame.winfo_children():
@@ -221,7 +285,7 @@ heart_label = tkinter.Label(mood_frame, image=temp)
 heart_label.place(x = 1, y = 1)
 heart_label.pack(side=tkinter.LEFT)
 
-mood_bar = Progressbar(mood_frame, variable=ame.happiness, orient=tkinter.HORIZONTAL, length=250, mode="determinate")
+mood_bar = Progressbar(mood_frame, variable=Ame.happiness, orient=tkinter.HORIZONTAL, length=250, mode="determinate")
 mood_bar.pack(side=tkinter.RIGHT)
 
 

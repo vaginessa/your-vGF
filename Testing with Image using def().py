@@ -3,9 +3,11 @@ from PIL import ImageTk, Image
 import os
 import random
 
-selfie_image = r"C:\\Users\\Edward\\Downloads\\ame sprites\\we will use\\Selfies"
-disappointed_image = r"C:\\Users\\Edward\\Downloads\\ame sprites\\we will use\\Disappointed"
-asking_image = r"C:\\Users\\Edward\\Downloads\\ame sprites\\we will use\\Asking"
+selfie_image = r"./resources/kangel/Selfies"
+disappointed_image = r"./resources/kangel/Disappointed"
+asking_image = r"./resources/kangel/Asking"
+happy_image = r"./resources/kangel/Happy"
+yandere_image = r"./resources/kangel/Yandere"
 
 win = Tk()
 win.title("Finish?")
