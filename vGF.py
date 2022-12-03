@@ -13,8 +13,6 @@ import bisect
 root = tkinter.Tk()
 root.title("vGF - zGUI™")
 
-global ame # ADDED THIS
-
 global mood 
 
 
@@ -103,11 +101,9 @@ def main():
             happiness = data["happiness"]
             affection = data["affection"]
             ame = Ame(name, happiness, affection)
-            # ame.happiness = 1000
             print(f"Name is {ame.name}, happiness is {ame.happiness}, affection is {ame.affection}")
     else:
         init_ame()
-        # print(os.path.isdir("./save.json"))
 
 def check_save():
     return os.path.isfile("./save.json") 
