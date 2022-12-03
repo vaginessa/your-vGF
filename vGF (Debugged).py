@@ -64,7 +64,19 @@ class Ame:
     @happiness.setter
     def happiness(self, happiness):
 
-        self._happiness = happiness
+        # self._happiness = happiness
+
+        if happiness >= 100:
+            #trigger event
+            print("happiness is at 100")
+            self._happiness  = 100
+        elif happiness <= 0:
+            #trigger event
+            print("happiness is at 0")
+            self._happiness = 0
+        else:
+            self._happiness = happiness
+
         # if self._happiness >= 100:
         #     #trigger event
         #     print("happiness is at 100")
@@ -152,7 +164,7 @@ def add_task():
         tkinter.messagebox.showwarning(title="Warning!", message="Please enter a task.")
 
 def complete_task():
-    global ame
+    # global ame
     task_index = task_listbox.curselection()[0]
     task_string = str(task_listbox.get(task_index)).lower()
     task_listbox.delete(task_index)
@@ -163,15 +175,15 @@ def complete_task():
     substrings = task_string.split()
     for substring in substrings:
         if substring in rewards.keys():
-            ame.happiness += rewards[substring]
+            ame.happiness = (ame.happiness + rewards[substring])
             # print(ame)
         else:
-            ame.happiness += 1
+            ame.happiness =  (ame.happiness + 1)
     # print(ame.happiness)
     mood.set(ame.happiness)
  
 def fail_task():
-    global ame
+    # global ame
     task_index = task_listbox.curselection()[0]
     task_string = str(task_listbox.get(task_index)).lower()
     task_listbox.delete(task_index)
@@ -182,9 +194,9 @@ def fail_task():
     substrings = task_string.split()
     for substring in substrings:
         if substring in rewards.keys():
-            ame.happiness -= rewards[substring]
+            ame.happiness = (ame.happiness - rewards[substring])
         else:
-            ame.happiness -= 1
+            ame.happiness = (ame.happiness - 1)
     mood.set(ame.happiness)
     
 
