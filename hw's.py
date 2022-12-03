@@ -45,6 +45,7 @@ class Ame:
             affection  = 100
         elif affection <= 0:
             affection = 0
+        update_sprite("affection", self.affection, affection)
         self._affection = affection
         write_save()
 

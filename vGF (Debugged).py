@@ -8,6 +8,7 @@ from random import *
 import random
 import json
 import os
+import bisect
 
 root = tkinter.Tk()
 root.title("vGF - zGUI™")
@@ -65,62 +66,13 @@ class Ame:
     
     @happiness.setter
     def happiness(self, happiness):
-        # self._happiness = happiness
-
         if happiness >= 100:
-            r = random.choice(os.listdir(happy_image))
-            img=ImageTk.PhotoImage(os.path.join(happy_image, r))
-            happy100 = tkinter.Label(mood_frame, image=img)
-            happy100.pack(side=tkinter.LEFT)
-    
-            print("happiness is at 100")
-            self._happiness  = 100
-
-        elif ame._happiness <75 and happiness >= 75:
-            r = random.choice(os.listdir(happy_image))
-            img=ImageTk.PhotoImage(os.path.join(happy_image, r))
-            happy100 = tkinter.Label(mood_frame, image=img)
-            happy100.pack(side=tkinter.LEFT)
-            
-            print("happiness is > 75")
-            self._happiness = happiness
-
-        elif happiness <= 25:
-            r = random.choice(os.listdir(happy_image))
-            img=ImageTk.PhotoImage(os.path.join(happy_image, r))
-            happy100 = tkinter.Label(mood_frame, image=img)
-            happy100.pack(side=tkinter.LEFT)
-            
-            print("happiness is < 25")
-            self._happiness = happiness
+            happiness = 100
         elif happiness <= 0:
-            r = random.choice(os.listdir(happy_image))
-            img=ImageTk.PhotoImage(os.path.join(happy_image, r))
-            happy100 = tkinter.Label(mood_frame, image=img)
-            happy100.pack(side=tkinter.LEFT)
-            
-            print("happiness is at 0")
-            self._happiness = 0
-
-        else:
-            self._happiness = happiness
-
-        # if self._happiness >= 100:
-        #     #trigger event
-        #     print("happiness is at 100")
-        #     self._happiness = 100
-        # if ame._happiness <75 and happiness >= 75:
-        #     #trigger event
-        #     print("happiness is > 75")
-        #     self._happiness = happiness
-        # if happiness <= 25:
-        #     #trigger event
-        #     print("happiness is < 25")
-        #     self._happiness = happiness
-        # elif happiness <= 0:
-        #     #trigger event
-        #     print("happiness is at 0")
-        #     self._happiness = 0
+            happiness = 0
+        update_sprite("happiness", self.happiness, happiness)
+        self._happiness = happiness
+        write_save()
 
     @property
     def affection(self):
@@ -129,15 +81,12 @@ class Ame:
     @affection.setter
     def affection(self, affection):
         if affection >= 100:
-            #Trigger Event
-            print("affection is at 100")
-            self._affection  = 100
+            affection  = 100
         elif affection <= 0:
-            #Trigger Event
-            print("affection is at 0")
-            self._affection = 0
-        else:
-            self._affection = affection
+            affection = 0
+        update_sprite("affection", self.affection, affection)
+        self._affection = affection
+        write_save()
 
 rewards = {'trash': 1, 'homework': 2, 'project': 5, 'work': 2, 'call': 1, 'book': 2, 'doctor': 2, 'dishes': 2,
     'chores': 3, 'chore': 3,}
@@ -161,11 +110,6 @@ def main():
         # print(os.path.isdir("./save.json"))
 
 def check_save():
-    # cwd = os.getcwd() 
-    # print(cwd)
-    # path = os.path.join(cwd, "save.json")
-    # print(os.path.isdir("./save.json"))
-    # print(os.path.isfile("./save.json"))
     return os.path.isfile("./save.json") 
 
 #initiate if no saved file
@@ -181,6 +125,14 @@ def write_save():
     data = {"name": ame.name, "happiness": ame.happiness, "affection": ame.affection}
     with open('./save.json', 'w') as outfile:
         json.dump(data, outfile)
+    
+def update_sprite(stat, old, new):
+    stages = ["0", "1-25", "25-50", "50-75", "75-99", "100"] #ed to change this based on names of sprite groups, this can be a global list instead
+    old_stage = bisect.bisect([1, 25, 50, 75, 100], old)
+    new_stage = bisect.bisect([1, 25, 50, 75, 100], new)
+    if new_stage != old_stage:
+        print(f"Change stat for {stat}, new stage is {stages[new_stage]}")
+        #change sprite, pass the values to the change sprite function
 
 def add_task():
     task = task_entry.get()
