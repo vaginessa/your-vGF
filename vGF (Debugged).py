@@ -243,7 +243,6 @@ def fail_task():
     response_list = ['Sorry..', "It won't happen again...", "I'm sorry...", "Please don't leave..."]
     button = Button(top, text=random.choice(response_list), command=top.destroy).pack()
         
-
 # GUI
 
 #Popup Texts

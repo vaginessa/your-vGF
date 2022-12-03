@@ -5,11 +5,10 @@ import time
 from random import *
 import json
 import os
+import bisect
 
 #class for character
 class Ame:
-
-    valid_range = range(0, 100) #sets allowed value for stats
 
     #initialise the class
     def __init__(self, name, happiness , affection):
@@ -29,15 +28,11 @@ class Ame:
     @happiness.setter
     def happiness(self, happiness):
         if happiness >= 100:
-            #trigger event
-            print("happiness is at 100")
-            self._happiness = 100
+            happiness = 100
         elif happiness <= 0:
-            #trigger event
-            print("happiness is at 0")
-            self._happiness = 0
-        else:
-            self._happiness = happiness
+            happiness = 0
+        update_sprite("happiness", self.happiness, happiness)
+        self._happiness = happiness
         write_save()
             
     @property
@@ -47,15 +42,10 @@ class Ame:
     @affection.setter
     def affection(self, affection):
         if affection >= 100:
-            #trigger event
-            print("affection is at 100")
-            self._affection  = 100
+            affection  = 100
         elif affection <= 0:
-            #trigger event
-            print("affection is at 0")
-            self._affection = 0
-        else:
-            self._affection = affection
+            affection = 0
+        self._affection = affection
         write_save()
 
 
@@ -95,6 +85,14 @@ def write_save():
     data = {"name": ame.name, "happiness": ame.happiness, "affection": ame.affection}
     with open('./save.json', 'w') as outfile:
         json.dump(data, outfile)
+
+def update_sprite(stat, old, new):
+    stages = ["0", "1-25", "25-50", "50-75", "75-99", "100"] #ed to change this based on names of sprite groups, this can be a global list instead
+    old_stage = bisect.bisect([1, 25, 50, 75, 100], old)
+    new_stage = bisect.bisect([1, 25, 50, 75, 100], new)
+    if new_stage != old_stage:
+        print(f"Change stat for {stat}, new stage is {stages[new_stage]}")
+        #change sprite, pass the values to the change sprite function
 
 #init main(), put this last
 if __name__ == "__main__":
