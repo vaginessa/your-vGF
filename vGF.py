@@ -60,18 +60,13 @@ class Ame:
             #trigger event
             print("happiness is at 100")
             self._happiness = 100
-        if ame._happiness <75 and happiness >= 75:
-            #trigger event
-            print("happiness is > 75")
-            self._happiness = happiness
-        if happiness <= 25:
-            #trigger event
-            print("happiness is < 25")
-            self._happiness = happiness
         elif happiness <= 0:
             #trigger event
             print("happiness is at 0")
             self._happiness = 0
+        else:
+            self._happiness = happiness
+        write_save()
 
             
     @property
@@ -90,6 +85,7 @@ class Ame:
             self._affection = 0
         else:
             self._affection = affection
+        write_save()
 
 rewards = {'trash': 1, 'homework': 2, 'project': 5, 'work': 2, 'call': 1, 'book': 2, 'doctor': 2, 'dishes': 2,
     'chores': 3, 'chore': 3,}
@@ -106,10 +102,11 @@ def main():
             happiness = data["happiness"]
             affection = data["affection"]
             ame = Ame(name, happiness, affection)
-            ame.happiness = 1000
             print(f"Name is {ame.name}, happiness is {ame.happiness}, affection is {ame.affection}")
     else:
         init_ame()
+    
+    root.mainloop()
 
 def check_save():
     return os.path.isfile("./save.json")
@@ -127,6 +124,7 @@ def write_save():
     data = {"name": ame.name, "happiness": ame.happiness, "affection": ame.affection}
     with open('./save.json', 'w') as outfile:
         json.dump(data, outfile)
+    print(f"File saved, Name is {ame.name}, happiness is {ame.happiness}, affection is {ame.affection}")
 
 def add_task():
     task = task_entry.get()
@@ -367,7 +365,6 @@ failed_task_button.pack()
 
 
 
-root.mainloop()
 
 #init main(), put this last
 if __name__ == "__main__":
