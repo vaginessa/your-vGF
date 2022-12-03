@@ -32,6 +32,7 @@ disappointed_image1 = r"./resources/ame/Disappointed"
 asking_image1 = r"./resources/ame/Asking"
 happy_image1 = r"./resources/ame/Happy"
 pillow_image1 = r"./resources/ame/Pillow"
+ameimage_groups = [selfie_image1, disappointed_image1, asking_image1, happy_image1, pillow_image1]
 
 #Assets for Kangel
 
@@ -40,6 +41,7 @@ disappointed_image = r"./resources/kangel/Disappointed"
 asking_image = r"./resources/kangel/Asking"
 happy_image = r"./resources/kangel/Happy"
 yandere_image = r"./resources/kangel/Yandere"
+kageimage_groups = [selfie_image, disappointed_image, asking_image, happy_image, yandere_image]
 
 #class for character
 class Ame:
@@ -143,7 +145,6 @@ def complete_task():
     task_index = task_listbox.curselection()[0]
     task_string = str(task_listbox.get(task_index)).lower()
     task_listbox.delete(task_index)
-    popupimage()
 
     # if any(substring.lower() in task_string.lower() for substring in rewards.keys()):
     #     mood.set(mood.get() + rewards[''])
@@ -157,6 +158,13 @@ def complete_task():
             ame.happiness =  (ame.happiness + 1)
     # print(ame.happiness)
     mood.set(ame.happiness)
+    if ame.happiness >= 50:
+        ask_list = ['Did my baby finish their work?', '^w^ Baby finished?', 'My cutie baby finished yet~?', "<3 Baby I'm lonely~ Done yet~?"]
+        popquestion('asking task', ask_list)
+
+    elif ame.happiness <50:
+        ask_list = ['Huh? You finished?', 'Finished?', "Hm.. You're done?", "Done?"]
+        popquestion('asking task', ask_list)
  
 def fail_task():
     global top
@@ -178,18 +186,8 @@ def fail_task():
     mood.set(ame.happiness)
 
     title_list = ['Tsk.', 'What the hell.', 'Disappointing.','Get out of my sight.','There is something seriously wrong with you.', 'Loser']
-
-    if ame.happiness >= 50:
-        top = Toplevel(root)
-        top.title(random.choice(title_list))
-        kangeldisappointed()
-    elif ame.happiness <50:
-        top = Toplevel(root)
-        top.title(random.choice(title_list))
-        amedisappointed()
-
     response_list = ['Sorry..', "It won't happen again...", "I'm sorry...", "Please don't leave..."]
-    button = Button(top, text=random.choice(response_list), command=top.destroy).pack()
+    popupdate('fail task', title_list, response_list)
         
 # GUI
 
@@ -201,30 +199,8 @@ def popuptextencourage():
 
 #Images and choices questioning if finished task on task completion
 
-def popupimage():
-    #For images to pop out
-    global img
-    global top
-    if ame.happiness >= 50:
-        top = Toplevel(root)
-        ask_list = ['Did my baby finish their work?', '^w^ Baby finished?', 'My cutie baby finished yet~?', "<3 Baby I'm lonely~ Done yet~?"]
-        top.title(random.choice(ask_list))
-        r = random.choice(os.listdir(asking_image))
-        img=ImageTk.PhotoImage(Image.open(os.path.join(asking_image, r)))
-        label = Label(top, image = img)
-        label.pack()
-
-    elif ame.happiness <50:
-        top = Toplevel(root)
-        ask_list = ['Huh? You finished?', 'Finished?', "Hm.. You're done?", "Done?"]
-        top.title(random.choice(ask_list))
-        r = random.choice(os.listdir(asking_image1))
-        img=ImageTk.PhotoImage(Image.open(os.path.join(asking_image1, r)))
-        label = Label(top, image = img)
-        label.pack()
-    button = Button(top, text='Did you finish?', command=open_img).pack()
- 
 def open_img():
+    topclear_frame()
     btn1=Button(top, text="Yes!", fg='blue', command =btn1_clicked)
     btn1.place(x=80, y=50)
     btn2=Button(top, text="No!", fg='red', command =btn2_clicked)
@@ -234,108 +210,83 @@ def open_img():
 def btn1_clicked():
     topclear_frame()
     happy_list1 = ['Good boy! ^w^', 'You cutie! A reward for you! uwu', 'I love you~! <3', 'My capable lover~ Kyaa~~', 'Come ere my baby~!', 'Awww~ Lookie you~']
-    top.title(random.choice(happy_list1))
-    if ame.happiness >= 50:
-        kangelselfie()
-    
-    elif ame.happiness <50:
-        ameselfie()
-
-
     response_list = ['Hehe~', 'I love you~', 'Thanks baby~', 'Wubbie chu~', '>;3 Yay~']
-    button = Button(top, text=random.choice(response_list), command=top.destroy).pack()
-
-
+    popupdate('complete task', happy_list1, response_list)
+    top.destroy()
 
 def btn2_clicked():
     topclear_frame()
-    ame.happiness = (ame.happiness - 2)
+    ame.happiness = (ame.happiness - 3)
     mood.set(ame.happiness)
     disappointed_list1 = ['How dare you lie to me...', 'I am disappointed in you for lying.', 'You liar!', 'Liar. Tsk.', '#41>?215?3!3']
-    top.title(random.choice((disappointed_list1)))
-    if ame.happiness >= 50:
-        kangeldisappointed()
-    elif ame.happiness <50:
-        amedisappointed()
-        
     response_list = ['Sorry..', "It won't happen again...", "I'm sorry...", "Please don't leave..."]
-    button = Button(top, text=random.choice(response_list), command=top.destroy).pack()
+    popupdate('fail task', disappointed_list1, response_list)
+    top.destroy()
 
-#Images for Ame
 
-def ameselfie():
+#Update Commands
+def popupdate(type, title, response):
     global img
-    r = random.choice(os.listdir(selfie_image1))
-    img=ImageTk.PhotoImage(Image.open(os.path.join(selfie_image1, r)))
+    if type == 'fail task' and ame.happiness < 50:
+        print('here')
+        image = disappointed_image1
+
+    elif type == 'fail task' and ame.happiness >= 50:
+        image = disappointed_image
+
+    elif type == 'complete task' and ame.happiness < 50:
+        image = selfie_image1
+    
+    elif type == 'complete task' and ame.happiness >= 50:
+        image = selfie_image
+
+
+    top = Toplevel(root)
+    top.title(random.choice(title))
+    r = random.choice(os.listdir(image))
+    img=ImageTk.PhotoImage(Image.open(os.path.join(image, r)))
     label = Label(top, image = img)
     label.pack()
+    button = Button(top, text=random.choice(response), command=top.destroy).pack()
 
-def amedisappointed():
+    
+def popquestion(type, title):
     global img
-    r = random.choice(os.listdir(disappointed_image1))
-    img=ImageTk.PhotoImage(Image.open(os.path.join(disappointed_image1, r)))
+    global top
+    if type == 'asking task' and ame.happiness <50:
+        image = asking_image1
+    
+    
+    
+    elif type == 'asking task' and ame.happiness >=50:
+        image = asking_image
+    
+    top = Toplevel(root)
+    top.title(random.choice(title))
+    r = random.choice(os.listdir(image))
+    img=ImageTk.PhotoImage(Image.open(os.path.join(image, r)))
     label = Label(top, image = img)
     label.pack()
+    button = Button(top, text='Did you finish?', command=open_img).pack()
 
-def ameasking():
+#Change Sprites Command
+def change_sprite(img_group):
     global img
-    r = random.choice(os.listdir(asking_image1))
-    img=ImageTk.PhotoImage(Image.open(os.path.join(asking_image1, r)))
-    label = Label(top, image = img)
-    label.pack()
+    sprite = ameimage_groups[img_group]
+    r = random.choice(os.listdir(sprite))
+    img=ImageTk.PhotoImage(Image.open(os.path.join(sprite, r)))
+    print(f"Sprite updated to{sprite}")
 
-def amehappy():
-    global img
-    r = random.choice(os.listdir(happy_image1))
-    img=ImageTk.PhotoImage(Image.open(os.path.join(happy_image1, r)))
-    label = Label(top, image = img)
-    label.pack()
 
-def amepillow():
+def popchange_sprite(img_group):
     global img
-    r = random.choice(os.listdir(pillow_image1))
-    img=ImageTk.PhotoImage(Image.open(os.path.join(pillow_image1, r)))
-    label = Label(top, image = img)
-    label.pack()
+    sprite = kageimage_groups[img_group]
+    r = random.choice(os.listdir(sprite))
+    img=ImageTk.PhotoImage(Image.open(os.path.join(sprite, r)))
+    print(f"Sprite updated to{sprite}")
 
-#Images for Kangel
-def kangelselfie():
-    global img
-    r = random.choice(os.listdir(selfie_image))
-    img=ImageTk.PhotoImage(Image.open(os.path.join(selfie_image, r)))
-    label = Label(top, image = img)
-    label.pack()
-
-def kangeldisappointed():
-    global img
-    r = random.choice(os.listdir(disappointed_image))
-    img=ImageTk.PhotoImage(Image.open(os.path.join(disappointed_image, r)))
-    label = Label(top, image = img)
-    label.pack()
-
-def kangelasking():
-    global img
-    r = random.choice(os.listdir(asking_image))
-    img=ImageTk.PhotoImage(Image.open(os.path.join(asking_image, r)))
-    label = Label(top, image = img)
-    label.pack()
-
-def kangelhappy():
-    global img
-    r = random.choice(os.listdir(happy_image))
-    img=ImageTk.PhotoImage(Image.open(os.path.join(happy_image, r)))
-    label = Label(top, image = img)
-    label.pack()
-
-def kangelyandere():
-    global img
-    r = random.choice(os.listdir(yandere_image))
-    img=ImageTk.PhotoImage(Image.open(os.path.join(yandere_image, r)))
-    label = Label(top, image = img)
-    label.pack()
 
 #Clear Frame Command
-
 def clear_frame():
    for widgets in root.winfo_children():
       widgets.destroy()
