@@ -5,6 +5,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 import time
 from random import *
+import random
 import json
 import os
 
@@ -14,6 +15,7 @@ root.title("vGF - zGUI™")
 global ame # ADDED THIS
 
 global mood 
+
 
 mood = tkinter.DoubleVar()
 
@@ -63,17 +65,31 @@ class Ame:
     
     @happiness.setter
     def happiness(self, happiness):
-
         # self._happiness = happiness
 
         if happiness >= 100:
-            #trigger event
+            #Trigger Event
+    
             print("happiness is at 100")
             self._happiness  = 100
+
+        elif ame._happiness <75 and happiness >= 75:
+            #Trigger Event
+            
+            print("happiness is > 75")
+            self._happiness = happiness
+
+        elif happiness <= 25:
+            #Trigger Event
+            
+            print("happiness is < 25")
+            self._happiness = happiness
         elif happiness <= 0:
-            #trigger event
+            #Trigger Event
+            
             print("happiness is at 0")
             self._happiness = 0
+
         else:
             self._happiness = happiness
 
@@ -94,7 +110,6 @@ class Ame:
         #     print("happiness is at 0")
         #     self._happiness = 0
 
-            
     @property
     def affection(self):
         return self._affection
@@ -102,11 +117,11 @@ class Ame:
     @affection.setter
     def affection(self, affection):
         if affection >= 100:
-            #trigger event
+            #Trigger Event
             print("affection is at 100")
             self._affection  = 100
         elif affection <= 0:
-            #trigger event
+            #Trigger Event
             print("affection is at 0")
             self._affection = 0
         else:
@@ -168,6 +183,7 @@ def complete_task():
     task_index = task_listbox.curselection()[0]
     task_string = str(task_listbox.get(task_index)).lower()
     task_listbox.delete(task_index)
+    popupimage()
 
     # if any(substring.lower() in task_string.lower() for substring in rewards.keys()):
     #     mood.set(mood.get() + rewards[''])
@@ -183,10 +199,12 @@ def complete_task():
     mood.set(ame.happiness)
  
 def fail_task():
+    global top
     # global ame
     task_index = task_listbox.curselection()[0]
     task_string = str(task_listbox.get(task_index)).lower()
     task_listbox.delete(task_index)
+
 
     # if any(substring.lower() in task_string.lower() for substring in rewards.keys()):
     #     mood.set(mood.get() + rewards[''])
@@ -198,51 +216,78 @@ def fail_task():
         else:
             ame.happiness = (ame.happiness - 1)
     mood.set(ame.happiness)
-    
+
+    title_list = ['Tsk.', 'What the hell.', 'Disappointing.','Get out of my sight.','There is something seriously wrong with you.', 'Loser']
+
+    if ame.happiness >= 50:
+        top = Toplevel(root)
+        top.title(random.choice(title_list))
+        kangeldisappointed()
+    elif ame.happiness <50:
+        top = Toplevel(root)
+        top.title(random.choice(title_list))
+        amedisappointed()
+    button = Button(top, text='Sorry...', command=top.destroy).pack()
+        
 
 # GUI
 
-#Images and choices whether finished task
+#Popup Texts
+def popuptextencourage():
+    tkinter.messagebox.showinfo("Happy", random.choice("Its so nice to feel special for once... To love someone more than anything in the world and have them love me back", "Everybody has a little raincloud form time to time. But sad poems can give the little raincloud a lil' hug! To make a nice happy rainbow!", "You’re always thinking about other people. You need to think of yourself once in a while. If you don’t, you might end up getting hurt at some point.", "You make me unbelievably proud, today and every day."))
 
 
-def popup():
+
+#Images and choices questioning if finished task on task completion
+
+def popupimage():
     #For images to pop out
-    global win
-    global frame
-    win = Tk()
-    win.title("Finish?")
-    win.geometry("500x500")
-    frame = Frame(win, width=600, height=400)
-    frame.pack()
-    frame.place(anchor='center', relx=0.5, rely=0.5)
-    
-def beginning():
     global img
-    r = random.choice(os.listdir(asking_image))
-    img=ImageTk.PhotoImage(Image.open(os.path.join(asking_image, r)))
-    label = Label(frame, image = img)
-    label.pack()
-    button = Button(win, text='Did you finish?', command=open_img).pack()
+    global top
+    top = Toplevel(root)
+    top.title("Finish?")
+    if ame.happiness >= 50:
+        r = random.choice(os.listdir(asking_image))
+        img=ImageTk.PhotoImage(Image.open(os.path.join(asking_image, r)))
+        label = Label(top, image = img)
+        label.pack()
+
+    elif ame.happiness <50:
+        r = random.choice(os.listdir(asking_image1))
+        img=ImageTk.PhotoImage(Image.open(os.path.join(asking_image1, r)))
+        label = Label(top, image = img)
+        label.pack()
+    button = Button(top, text='Did you finish?', command=open_img).pack()
  
 def open_img():
-    clear_frame()
-    btn1=Button(win, text="Yes!", fg='blue', command =btn1_clicked)
+    btn1=Button(top, text="Yes!", fg='blue', command =btn1_clicked)
     btn1.place(x=80, y=50)
-    btn2=Button(win, text="No!", fg='red', command =btn2_clicked)
-    btn2.place(x=360, y=50)
+    btn2=Button(top, text="No!", fg='red', command =btn2_clicked)
+    btn2.place(x=240, y=50)
 
 
 def btn1_clicked():
-    clear_frame()
-    win.title("Good boy! ^w^")
-    ameselfie()
+    topclear_frame()
+    happy_list1 = ['Good boy! ^w^', 'You cutie! A reward for you! uwu', 'I love you~! <3', 'My capable lover~ Kyaa~~']
+    top.title(random.choice(happy_list1))
+    if ame.happiness >= 50:
+        kangelselfie()
+    
+    elif ame.happiness <50:
+        ameselfie()
 
 
 
 def btn2_clicked():
-    clear_frame()
-    win.title("How dare you...")
-    amedisappointed()
+    topclear_frame()
+    ame.happiness = (ame.happiness - 2)
+    mood.set(ame.happiness)
+    disappointed_list1 = ['How dare you lie to me...', 'I am disappointed in you for lying.', 'You liar!', 'Liar. Tsk.', '#41>?215?3!3']
+    top.title(random.choice((disappointed_list1)))
+    if ame.happiness >= 50:
+        kangeldisappointed()
+    elif ame.happiness <50:
+        amedisappointed()
 
 #Images for Ame
 
@@ -250,35 +295,35 @@ def ameselfie():
     global img
     r = random.choice(os.listdir(selfie_image1))
     img=ImageTk.PhotoImage(Image.open(os.path.join(selfie_image1, r)))
-    label = Label(frame, image = img)
+    label = Label(top, image = img)
     label.pack()
 
 def amedisappointed():
     global img
     r = random.choice(os.listdir(disappointed_image1))
     img=ImageTk.PhotoImage(Image.open(os.path.join(disappointed_image1, r)))
-    label = Label(frame, image = img)
+    label = Label(top, image = img)
     label.pack()
 
 def ameasking():
     global img
     r = random.choice(os.listdir(asking_image1))
     img=ImageTk.PhotoImage(Image.open(os.path.join(asking_image1, r)))
-    label = Label(frame, image = img)
+    label = Label(top, image = img)
     label.pack()
 
 def amehappy():
     global img
     r = random.choice(os.listdir(happy_image1))
     img=ImageTk.PhotoImage(Image.open(os.path.join(happy_image1, r)))
-    label = Label(frame, image = img)
+    label = Label(top, image = img)
     label.pack()
 
 def amepillow():
     global img
     r = random.choice(os.listdir(pillow_image1))
     img=ImageTk.PhotoImage(Image.open(os.path.join(pillow_image1, r)))
-    label = Label(frame, image = img)
+    label = Label(top, image = img)
     label.pack()
 
 #Images for Kangel
@@ -286,41 +331,45 @@ def kangelselfie():
     global img
     r = random.choice(os.listdir(selfie_image))
     img=ImageTk.PhotoImage(Image.open(os.path.join(selfie_image, r)))
-    label = Label(frame, image = img)
+    label = Label(top, image = img)
     label.pack()
 
 def kangeldisappointed():
     global img
     r = random.choice(os.listdir(disappointed_image))
     img=ImageTk.PhotoImage(Image.open(os.path.join(disappointed_image, r)))
-    label = Label(frame, image = img)
+    label = Label(top, image = img)
     label.pack()
 
 def kangelasking():
     global img
     r = random.choice(os.listdir(asking_image))
     img=ImageTk.PhotoImage(Image.open(os.path.join(asking_image, r)))
-    label = Label(frame, image = img)
+    label = Label(top, image = img)
     label.pack()
 
 def kangelhappy():
     global img
     r = random.choice(os.listdir(happy_image))
     img=ImageTk.PhotoImage(Image.open(os.path.join(happy_image, r)))
-    label = Label(frame, image = img)
+    label = Label(top, image = img)
     label.pack()
 
 def kangelyandere():
     global img
     r = random.choice(os.listdir(yandere_image))
     img=ImageTk.PhotoImage(Image.open(os.path.join(yandere_image, r)))
-    label = Label(frame, image = img)
+    label = Label(top, image = img)
     label.pack()
 
 #Clear Frame Command
 
 def clear_frame():
-   for widgets in frame.winfo_children():
+   for widgets in root.winfo_children():
+      widgets.destroy()
+
+def topclear_frame():
+   for widgets in top.winfo_children():
       widgets.destroy()
 
 # Mood Bar Frame
@@ -370,6 +419,7 @@ failed_task_button = tkinter.Button(root, text="Task Failed", width=48, command=
 failed_task_button.pack()
 
 #Scrollbar
+
 
 
 
