@@ -14,9 +14,11 @@ root.title("vGF - zGUI™")
 
 global ame # ADDED THIS 
 
+
 global current_sprite
 
 mood = tkinter.DoubleVar()
+
 
 
 # Assets 
@@ -68,25 +70,36 @@ class Ame:
         global current_sprite
         global img
 
+        
         # self._happiness = happiness
         if happiness >= 100:
+    
             current_sprite = random_image1('Yandere')
+            image_sprite()
             print("happiness is at 100")
             self._happiness  = 100
 
         elif happiness <= 0:
+
             current_sprite = random_image('Vomitting')
+            image_sprite()
             print("happiness is at 0")
 
             self._happiness = 0
         
         elif happiness >= 50:
+ 
             current_sprite = random_image1('Love')
+            image_sprite()
+
         
             self._happiness = happiness
 
         elif happiness < 50:
+     
             current_sprite = random_image('Disappointed')
+            image_sprite()
+
        
             self._happiness = happiness
         else:
@@ -230,6 +243,17 @@ def write_save():
 
 # Mood Bar Frame
 
+def image_sprite():
+    global sprite_label
+    sprite_label.destroy()
+    temp = ImageTk.PhotoImage(Image.open(current_sprite))
+    sprite_label = tkinter.Label(root, image = temp)
+    sprite_label.image = temp
+    sprite_label.pack()
+    
+
+
+
 
 def random_image(emotion):
     if emotion not in {'Asking', 'Disappointed','Hair','Happy','Pillow','Selfies','Vomitting'}:
@@ -252,6 +276,9 @@ def random_image1(emotion):
 
 
 def tkinter_app():
+    global temp
+    global sprite_label
+
     def add_task():
         task = task_entry.get()
         if task != '':
@@ -363,7 +390,6 @@ def tkinter_app():
     def popupdate(type, title, response):
         global img
         if type == 'fail task' and ame.happiness < 50:
-            print('here')
             image = disappointed_image1
 
         elif type == 'fail task' and ame.happiness >= 50:
@@ -383,6 +409,7 @@ def tkinter_app():
         label = Label(top, image = img)
         label.pack()
         button = Button(top, text=random.choice(response), command=top.destroy).pack()
+
     
     def popquestion(type, title):
         global img
@@ -403,6 +430,9 @@ def tkinter_app():
         label.pack()
         button = Button(top, text='Did you finish?', command=open_img).pack()
 
+
+
+    
     #Clear Frame Command
     def clear_frame():
         for widgets in root.winfo_children():
@@ -438,9 +468,7 @@ def tkinter_app():
 
     # current_sprite = random_image("Happy")
 
-    temp = ImageTk.PhotoImage(Image.open(current_sprite))
-    sprite_label = tkinter.Label(root, image= temp)
-    sprite_label.pack()
+    
 
 
     # Task Frame
@@ -480,7 +508,10 @@ def tkinter_app():
     failed_task_button = tkinter.Button(root, text="Task Failed", width=48, command=fail_task)
     failed_task_button.pack()
 
-        
+    temp = ImageTk.PhotoImage(Image.open(current_sprite))
+    sprite_label = tkinter.Label(root, image = temp)
+    sprite_label.image = temp
+    sprite_label.pack()
 
 
 
