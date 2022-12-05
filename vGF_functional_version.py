@@ -299,6 +299,14 @@ def tkinter_app():
 
         remove(task_string)
 
+        if ame.happiness >= 50:
+            ask_list = ['Did my baby finish their work?', '^w^ Baby finished?', 'My cutie baby finished yet~?', "<3 Baby I'm lonely~ Done yet~?"]
+            popquestion('asking task', ask_list)
+
+        elif ame.happiness <50:
+            ask_list = ['Huh? You finished?', 'Finished?', "Hm.. You're done?", "Done?"]
+            popquestion('asking task', ask_list)
+
         
             
     
@@ -319,6 +327,12 @@ def tkinter_app():
                 ame.happiness = (ame.happiness - 1)
         mood.set(ame.happiness)
         remove(task_string)
+
+        title_list = ['Tsk.', 'What the hell.', 'Disappointing.','Get out of my sight.','There is something seriously wrong with you.', 'Loser']
+        response_list = ['Sorry..', "It won't happen again...", "I'm sorry...", "Please don't leave..."]
+        popupdate('fail task', title_list, response_list)
+
+        
         
     def remove(task_string):
         with open('./save.json') as file:
@@ -327,6 +341,107 @@ def tkinter_app():
         tasks.pop(tasks.index(task_string))
         with open('./save.json', 'w') as outfile:
             json.dump(data, outfile)
+
+
+
+    def popuptextencourage():
+        tkinter.messagebox.showinfo("Happy", random.choice("Its so nice to feel special for once... To love someone more than anything in the world and have them love me back", "Everybody has a little raincloud form time to time. But sad poems can give the little raincloud a lil' hug! To make a nice happy rainbow!", "You’re always thinking about other people. You need to think of yourself once in a while. If you don’t, you might end up getting hurt at some point.", "You make me unbelievably proud, today and every day."))
+
+    def open_img():
+        topclear_frame()
+        btn1=Button(top, text="Yes!", fg='blue', command =btn1_clicked)
+        btn1.place(x=80, y=50)
+        btn2=Button(top, text="No!", fg='red', command =btn2_clicked)
+        btn2.place(x=240, y=50)
+
+    def btn1_clicked():
+        topclear_frame()
+        happy_list1 = ['Good boy! ^w^', 'You cutie! A reward for you! uwu', 'I love you~! <3', 'My capable lover~ Kyaa~~', 'Come ere my baby~!', 'Awww~ Lookie you~']
+        response_list = ['Hehe~', 'I love you~', 'Thanks baby~', 'Wubbie chu~', '>;3 Yay~']
+        popupdate('complete task', happy_list1, response_list)
+        top.destroy()
+
+    def btn2_clicked():
+        topclear_frame()
+        ame.happiness = (ame.happiness - 3)
+        mood.set(ame.happiness)
+        disappointed_list1 = ['How dare you lie to me...', 'I am disappointed in you for lying.', 'You liar!', 'Liar. Tsk.', '#41>?215?3!3']
+        response_list = ['Sorry..', "It won't happen again...", "I'm sorry...", "Please don't leave..."]
+        popupdate('fail task', disappointed_list1, response_list)
+        top.destroy()
+    
+    #Update Commands
+    def popupdate(type, title, response):
+        global img
+        if type == 'fail task' and ame.happiness < 50:
+            print('here')
+            image = disappointed_image1
+
+        elif type == 'fail task' and ame.happiness >= 50:
+            image = disappointed_image
+
+        elif type == 'complete task' and ame.happiness < 50:
+            image = selfie_image1
+        
+        elif type == 'complete task' and ame.happiness >= 50:
+            image = selfie_image
+
+
+        top = Toplevel(root)
+        top.title(random.choice(title))
+        r = random.choice(os.listdir(image))
+        img=ImageTk.PhotoImage(Image.open(os.path.join(image, r)))
+        label = Label(top, image = img)
+        label.pack()
+        button = Button(top, text=random.choice(response), command=top.destroy).pack()
+    
+    def popquestion(type, title):
+        global img
+        global top
+        if type == 'asking task' and ame.happiness <50:
+            image = asking_image1
+        
+        
+        
+        elif type == 'asking task' and ame.happiness >=50:
+            image = asking_image
+        
+        top = Toplevel(root)
+        top.title(random.choice(title))
+        r = random.choice(os.listdir(image))
+        img=ImageTk.PhotoImage(Image.open(os.path.join(image, r)))
+        label = Label(top, image = img)
+        label.pack()
+        button = Button(top, text='Did you finish?', command=open_img).pack()
+
+
+    #Change Sprites Command
+    def change_sprite(img_group):
+        global img
+        sprite = ameimage_groups[img_group]
+        r = random.choice(os.listdir(sprite))
+        img=ImageTk.PhotoImage(Image.open(os.path.join(sprite, r)))
+        print(f"Sprite updated to{sprite}")
+
+
+    def popchange_sprite(img_group):
+        global img
+        sprite = kageimage_groups[img_group]
+        r = random.choice(os.listdir(sprite))
+        img=ImageTk.PhotoImage(Image.open(os.path.join(sprite, r)))
+        print(f"Sprite updated to{sprite}")
+
+
+    #Clear Frame Command
+    def clear_frame():
+        for widgets in root.winfo_children():
+            widgets.destroy()
+
+    def topclear_frame():
+        for widgets in top.winfo_children():
+            widgets.destroy()
+
+    # Mood frame
 
     mood_frame = tkinter.Frame(root)
     mood_frame.pack()
@@ -351,6 +466,8 @@ def tkinter_app():
 
 
     # current_sprite = random_image("Happy")
+
+
 
 
 
