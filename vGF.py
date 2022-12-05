@@ -5,15 +5,16 @@ from tkinter import *
 from PIL import Image, ImageTk
 import time
 from random import *
+import random
 import json
 import os
+import bisect
 
 root = tkinter.Tk()
 root.title("vGF - zGUI™")
 
-global ame # ADDED THIS
-
 global mood 
+
 
 mood = tkinter.DoubleVar()
 
@@ -31,6 +32,7 @@ disappointed_image1 = r"./resources/ame/Disappointed"
 asking_image1 = r"./resources/ame/Asking"
 happy_image1 = r"./resources/ame/Happy"
 pillow_image1 = r"./resources/ame/Pillow"
+ameimage_groups = [selfie_image1, disappointed_image1, asking_image1, happy_image1, pillow_image1]
 
 #Assets for Kangel
 
@@ -39,6 +41,7 @@ disappointed_image = r"./resources/kangel/Disappointed"
 asking_image = r"./resources/kangel/Asking"
 happy_image = r"./resources/kangel/Happy"
 yandere_image = r"./resources/kangel/Yandere"
+kageimage_groups = [selfie_image, disappointed_image, asking_image, happy_image, yandere_image]
 
 #class for character
 class Ame:
@@ -63,38 +66,14 @@ class Ame:
     
     @happiness.setter
     def happiness(self, happiness):
-
-        # self._happiness = happiness
-
         if happiness >= 100:
-            #trigger event
-            print("happiness is at 100")
-            self._happiness  = 100
+            happiness = 100
         elif happiness <= 0:
-            #trigger event
-            print("happiness is at 0")
-            self._happiness = 0
-        else:
-            self._happiness = happiness
+            happiness = 0
+        update_sprite("happiness", self.happiness, happiness)
+        self._happiness = happiness
+        write_save()
 
-        # if self._happiness >= 100:
-        #     #trigger event
-        #     print("happiness is at 100")
-        #     self._happiness = 100
-        # if ame._happiness <75 and happiness >= 75:
-        #     #trigger event
-        #     print("happiness is > 75")
-        #     self._happiness = happiness
-        # if happiness <= 25:
-        #     #trigger event
-        #     print("happiness is < 25")
-        #     self._happiness = happiness
-        # elif happiness <= 0:
-        #     #trigger event
-        #     print("happiness is at 0")
-        #     self._happiness = 0
-
-            
     @property
     def affection(self):
         return self._affection
@@ -102,15 +81,12 @@ class Ame:
     @affection.setter
     def affection(self, affection):
         if affection >= 100:
-            #trigger event
-            print("affection is at 100")
-            self._affection  = 100
+            affection  = 100
         elif affection <= 0:
-            #trigger event
-            print("affection is at 0")
-            self._affection = 0
-        else:
-            self._affection = affection
+            affection = 0
+        update_sprite("affection", self.affection, affection)
+        self._affection = affection
+        write_save()
 
 rewards = {'trash': 1, 'homework': 2, 'project': 5, 'work': 2, 'call': 1, 'book': 2, 'doctor': 2, 'dishes': 2,
     'chores': 3, 'chore': 3,}
@@ -118,6 +94,7 @@ rewards = {'trash': 1, 'homework': 2, 'project': 5, 'work': 2, 'call': 1, 'book'
 # Logic
 
 def main():
+    root.mainloop() # MOVED
     global ame
     #check if a saved file exists
     if check_save():
@@ -127,22 +104,11 @@ def main():
             happiness = data["happiness"]
             affection = data["affection"]
             ame = Ame(name, happiness, affection)
-            # ame.happiness = 1000
             print(f"Name is {ame.name}, happiness is {ame.happiness}, affection is {ame.affection}")
-
-            tasks = data["tasks"]
-            for task in tasks:
-                task_listbox.insert(tkinter.END, task)
     else:
         init_ame()
-        # print(os.path.isdir("./save.json"))
 
 def check_save():
-    # cwd = os.getcwd() 
-    # print(cwd)
-    # path = os.path.join(cwd, "save.json")
-    # print(os.path.isdir("./save.json"))
-    # print(os.path.isfile("./save.json"))
     return os.path.isfile("./save.json") 
 
 #initiate if no saved file
@@ -155,9 +121,17 @@ def init_ame():
 
 #write to save file
 def write_save():
-    data = {"name": ame.name, "happiness": ame.happiness, "affection": ame.affection, "tasks": []}
+    data = {"name": ame.name, "happiness": ame.happiness, "affection": ame.affection}
     with open('./save.json', 'w') as outfile:
         json.dump(data, outfile)
+    
+def update_sprite(stat, old, new):
+    stages = ["0", "1-25", "25-50", "50-75", "75-99", "100"] #ed to change this based on names of sprite groups, this can be a global list instead
+    old_stage = bisect.bisect([1, 25, 50, 75, 100], old)
+    new_stage = bisect.bisect([1, 25, 50, 75, 100], new)
+    if new_stage != old_stage:
+        print(f"Change stat for {stat}, new stage is {stages[new_stage]}")
+        #change sprite, pass the values to the change sprite function
 
 def add_task():
     task = task_entry.get()
@@ -166,15 +140,6 @@ def add_task():
         task_entry.delete(0, tkinter.END)
     else:
         tkinter.messagebox.showwarning(title="Warning!", message="Please enter a task.")
-        return()
-
-    with open('./save.json') as file:
-        data  = json.load(file)
-        tasks = data["tasks"]
-    tasks.append(task)
-    with open('./save.json', 'w') as outfile:
-        json.dump(data, outfile)
-
 
 def complete_task():
     # global ame
@@ -194,17 +159,21 @@ def complete_task():
             ame.happiness =  (ame.happiness + 1)
     # print(ame.happiness)
     mood.set(ame.happiness)
+    if ame.happiness >= 50:
+        ask_list = ['Did my baby finish their work?', '^w^ Baby finished?', 'My cutie baby finished yet~?', "<3 Baby I'm lonely~ Done yet~?"]
+        popquestion('asking task', ask_list)
 
-    remove(task_string)
-
-    
-        
+    elif ame.happiness <50:
+        ask_list = ['Huh? You finished?', 'Finished?', "Hm.. You're done?", "Done?"]
+        popquestion('asking task', ask_list)
  
 def fail_task():
+    global top
     # global ame
     task_index = task_listbox.curselection()[0]
     task_string = str(task_listbox.get(task_index)).lower()
     task_listbox.delete(task_index)
+
 
     # if any(substring.lower() in task_string.lower() for substring in rewards.keys()):
     #     mood.set(mood.get() + rewards[''])
@@ -216,137 +185,115 @@ def fail_task():
         else:
             ame.happiness = (ame.happiness - 1)
     mood.set(ame.happiness)
-    remove(task_string)
-    
-def remove(task_string):
-    with open('./save.json') as file:
-        data  = json.load(file)
-        tasks = data["tasks"]
-    tasks.pop(tasks.index(task_string))
-    with open('./save.json', 'w') as outfile:
-        json.dump(data, outfile)
 
+    title_list = ['Tsk.', 'What the hell.', 'Disappointing.','Get out of my sight.','There is something seriously wrong with you.', 'Loser']
+    response_list = ['Sorry..', "It won't happen again...", "I'm sorry...", "Please don't leave..."]
+    popupdate('fail task', title_list, response_list)
+        
 # GUI
 
-#Images and choices whether finished task
+#Popup Texts
+def popuptextencourage():
+    tkinter.messagebox.showinfo("Happy", random.choice("Its so nice to feel special for once... To love someone more than anything in the world and have them love me back", "Everybody has a little raincloud form time to time. But sad poems can give the little raincloud a lil' hug! To make a nice happy rainbow!", "You’re always thinking about other people. You need to think of yourself once in a while. If you don’t, you might end up getting hurt at some point.", "You make me unbelievably proud, today and every day."))
 
 
-def popup():
-    #For images to pop out
-    global win
-    global frame
-    win = Tk()
-    win.title("Finish?")
-    win.geometry("500x500")
-    frame = Frame(win, width=600, height=400)
-    frame.pack()
-    frame.place(anchor='center', relx=0.5, rely=0.5)
-    
-def beginning():
-    global img
-    r = random.choice(os.listdir(asking_image))
-    img=ImageTk.PhotoImage(Image.open(os.path.join(asking_image, r)))
-    label = Label(frame, image = img)
-    label.pack()
-    button = Button(win, text='Did you finish?', command=open_img).pack()
- 
+
+#Images and choices questioning if finished task on task completion
+
 def open_img():
-    clear_frame()
-    btn1=Button(win, text="Yes!", fg='blue', command =btn1_clicked)
+    topclear_frame()
+    btn1=Button(top, text="Yes!", fg='blue', command =btn1_clicked)
     btn1.place(x=80, y=50)
-    btn2=Button(win, text="No!", fg='red', command =btn2_clicked)
-    btn2.place(x=360, y=50)
+    btn2=Button(top, text="No!", fg='red', command =btn2_clicked)
+    btn2.place(x=240, y=50)
 
 
 def btn1_clicked():
-    clear_frame()
-    win.title("Good boy! ^w^")
-    ameselfie()
-
-
+    topclear_frame()
+    happy_list1 = ['Good boy! ^w^', 'You cutie! A reward for you! uwu', 'I love you~! <3', 'My capable lover~ Kyaa~~', 'Come ere my baby~!', 'Awww~ Lookie you~']
+    response_list = ['Hehe~', 'I love you~', 'Thanks baby~', 'Wubbie chu~', '>;3 Yay~']
+    popupdate('complete task', happy_list1, response_list)
+    top.destroy()
 
 def btn2_clicked():
-    clear_frame()
-    win.title("How dare you...")
-    amedisappointed()
+    topclear_frame()
+    ame.happiness = (ame.happiness - 3)
+    mood.set(ame.happiness)
+    disappointed_list1 = ['How dare you lie to me...', 'I am disappointed in you for lying.', 'You liar!', 'Liar. Tsk.', '#41>?215?3!3']
+    response_list = ['Sorry..', "It won't happen again...", "I'm sorry...", "Please don't leave..."]
+    popupdate('fail task', disappointed_list1, response_list)
+    top.destroy()
 
-#Images for Ame
 
-def ameselfie():
+#Update Commands
+def popupdate(type, title, response):
     global img
-    r = random.choice(os.listdir(selfie_image1))
-    img=ImageTk.PhotoImage(Image.open(os.path.join(selfie_image1, r)))
-    label = Label(frame, image = img)
-    label.pack()
+    if type == 'fail task' and ame.happiness < 50:
+        print('here')
+        image = disappointed_image1
 
-def amedisappointed():
-    global img
-    r = random.choice(os.listdir(disappointed_image1))
-    img=ImageTk.PhotoImage(Image.open(os.path.join(disappointed_image1, r)))
-    label = Label(frame, image = img)
-    label.pack()
+    elif type == 'fail task' and ame.happiness >= 50:
+        image = disappointed_image
 
-def ameasking():
-    global img
-    r = random.choice(os.listdir(asking_image1))
-    img=ImageTk.PhotoImage(Image.open(os.path.join(asking_image1, r)))
-    label = Label(frame, image = img)
-    label.pack()
+    elif type == 'complete task' and ame.happiness < 50:
+        image = selfie_image1
+    
+    elif type == 'complete task' and ame.happiness >= 50:
+        image = selfie_image
 
-def amehappy():
-    global img
-    r = random.choice(os.listdir(happy_image1))
-    img=ImageTk.PhotoImage(Image.open(os.path.join(happy_image1, r)))
-    label = Label(frame, image = img)
-    label.pack()
 
-def amepillow():
-    global img
-    r = random.choice(os.listdir(pillow_image1))
-    img=ImageTk.PhotoImage(Image.open(os.path.join(pillow_image1, r)))
-    label = Label(frame, image = img)
+    top = Toplevel(root)
+    top.title(random.choice(title))
+    r = random.choice(os.listdir(image))
+    img=ImageTk.PhotoImage(Image.open(os.path.join(image, r)))
+    label = Label(top, image = img)
     label.pack()
+    button = Button(top, text=random.choice(response), command=top.destroy).pack()
 
-#Images for Kangel
-def kangelselfie():
+    
+def popquestion(type, title):
     global img
-    r = random.choice(os.listdir(selfie_image))
-    img=ImageTk.PhotoImage(Image.open(os.path.join(selfie_image, r)))
-    label = Label(frame, image = img)
+    global top
+    if type == 'asking task' and ame.happiness <50:
+        image = asking_image1
+    
+    
+    
+    elif type == 'asking task' and ame.happiness >=50:
+        image = asking_image
+    
+    top = Toplevel(root)
+    top.title(random.choice(title))
+    r = random.choice(os.listdir(image))
+    img=ImageTk.PhotoImage(Image.open(os.path.join(image, r)))
+    label = Label(top, image = img)
     label.pack()
+    button = Button(top, text='Did you finish?', command=open_img).pack()
 
-def kangeldisappointed():
+#Change Sprites Command
+def change_sprite(img_group):
     global img
-    r = random.choice(os.listdir(disappointed_image))
-    img=ImageTk.PhotoImage(Image.open(os.path.join(disappointed_image, r)))
-    label = Label(frame, image = img)
-    label.pack()
+    sprite = ameimage_groups[img_group]
+    r = random.choice(os.listdir(sprite))
+    img=ImageTk.PhotoImage(Image.open(os.path.join(sprite, r)))
+    print(f"Sprite updated to{sprite}")
 
-def kangelasking():
-    global img
-    r = random.choice(os.listdir(asking_image))
-    img=ImageTk.PhotoImage(Image.open(os.path.join(asking_image, r)))
-    label = Label(frame, image = img)
-    label.pack()
 
-def kangelhappy():
+def popchange_sprite(img_group):
     global img
-    r = random.choice(os.listdir(happy_image))
-    img=ImageTk.PhotoImage(Image.open(os.path.join(happy_image, r)))
-    label = Label(frame, image = img)
-    label.pack()
+    sprite = kageimage_groups[img_group]
+    r = random.choice(os.listdir(sprite))
+    img=ImageTk.PhotoImage(Image.open(os.path.join(sprite, r)))
+    print(f"Sprite updated to{sprite}")
 
-def kangelyandere():
-    global img
-    r = random.choice(os.listdir(yandere_image))
-    img=ImageTk.PhotoImage(Image.open(os.path.join(yandere_image, r)))
-    label = Label(frame, image = img)
-    label.pack()
 
 #Clear Frame Command
-
 def clear_frame():
-   for widgets in frame.winfo_children():
+   for widgets in root.winfo_children():
+      widgets.destroy()
+
+def topclear_frame():
+   for widgets in top.winfo_children():
       widgets.destroy()
 
 # Mood Bar Frame
@@ -435,9 +382,8 @@ failed_task_button.pack()
 
 
 
+
 #init main(), put this last
 if __name__ == "__main__":
 
     main()
-
-    root.mainloop() # MOVED
