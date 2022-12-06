@@ -73,23 +73,17 @@ class Ame:
             happiness = 0
 
         stat = get_stat_update("happiness", self._happiness, happiness)
-        affection_bonus = self._affection
         if stat[2] == 4 and happiness > self._happiness:
-            affection_bonus = self._affection + 3
-            get_stat_update("happiness", self._affection, affection_bonus)
+            ame.affection += 3
         if stat[2] == 3 and happiness > self._happiness:
-            affection_bonus = self._affection + 1
-            get_stat_update("happiness", self._affection, affection_bonus)
+            ame.affection += 1
         if stat[2] == 2 and happiness < self._happiness:
-            affection_bonus = self._affection - 1
-            get_stat_update("happiness", self._affection, affection_bonus)
+            ame.affection -= 1
         if stat[2] == 1 and happiness < self._happiness:
-            affection_bonus = self._affection - 3
-            get_stat_update("happiness", self._affection, affection_bonus)
+            ame.affection -= 3
 
-        print(f"Updating stat, happiness changed from {self._happiness} to {happiness}, affection changed from {self._affection} to {affection_bonus}")
+        print(f"Updating stat, happiness changed from {self._happiness} to {happiness}, affection changed from {self._affection} to {self.affection}")
         self._happiness = happiness
-        self._affection = affection_bonus
         tk_happiness_stat.set(self._happiness)
         tk_affection_stat.set(self._affection)
         update_gui_stats()
@@ -108,21 +102,16 @@ class Ame:
 
         stat = get_stat_update("affection", self._affection, affection)
         if stat[2] == 4 and affection > self._affection:
-            happiness_bonus = self._happiness + 3
-            get_stat_update("happiness", self._happiness, happiness_bonus)
+            ame.happiness += 3
         if stat[2] == 3 and affection > self._affection:
-            happiness_bonus = self._happiness + 1
-            get_stat_update("happiness", self._happiness, happiness_bonus)
+            ame.happiness += 1
         if stat[2] == 2 and affection < self._affection:
-            happiness_bonus = self._happiness - 1
-            get_stat_update("happiness", self._happiness, happiness_bonus)
+            ame.happiness -= 1
         if stat[2] == 1 and affection < self._affection:
-            happiness_bonus = self._happiness - 3
-            get_stat_update("happiness", self._happiness, happiness_bonus)
+            ame.happiness -= 3
 
-        print(f"Updating stats, happiness changed from {self._happiness} to {happiness_bonus}, affection changed from {self._affection} to {affection}")
+        print(f"Updating stats, happiness changed from {self._happiness} to {self.happiness}, affection changed from {self._affection} to {affection}")
         self._affection = affection
-        self._happiness = happiness_bonus
         tk_happiness_stat.set(self._happiness)
         tk_affection_stat.set(self._affection)
         update_gui_stats()
