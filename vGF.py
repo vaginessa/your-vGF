@@ -560,4 +560,4 @@ if __name__ == "__main__":
 
 
 
-###to do, complete task, adjust meters, function to change sprite
+# to do: task timer (technically done but not in gui, just alert box for now), random event, special event for stage 0 and 5
