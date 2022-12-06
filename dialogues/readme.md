@@ -5,8 +5,8 @@
 <ul>
   <li>Did you know sea otters hold hands when they sleep?</li>
   <li>♪♫♪♬♬♭</li>
-  <li>A crocodile can't stick its tongue out</li>
-  <li>Fourth item</li>
+  <li>A crocodile can't stick its tongue out :></li>
+  <li>To the guy who invented zero, thanks for nothing.</li>
 </ul> 
 
 ### Encouraging messaages
