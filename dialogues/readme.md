@@ -3,8 +3,8 @@
 ### Small talk
 
 <ul>
-  <li>First item</li>
-  <li>Second item</li>
+  <li>Did you know sea otters hold hands when they sleep?</li>
+  <li>♪♫♪♬♬♭</li>
   <li>Third item</li>
   <li>Fourth item</li>
 </ul> 
