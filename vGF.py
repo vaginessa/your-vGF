@@ -541,8 +541,12 @@ def complete_event(status):
     event_frame.grid_forget()
     if status == "complete":
         ame.happiness += 3
+        stage = bisect.bisect([1, 25, 50, 75, 100], ame.happiness)
+        update_main(stage)
     elif status == "fail":
         ame.happiness -= 3
+        stage = bisect.bisect([1, 25, 50, 75, 100], ame.happiness)
+        update_main(stage)
     elif status == "yes":
         ame.affection += 5
         stage = bisect.bisect([1, 25, 50, 75, 100], ame.happiness)
