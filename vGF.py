@@ -24,7 +24,7 @@ from ctypes import byref
 
 #declare assets and variables
 tk_root = Tk()
-tk_root.configure()
+tk_root.geometry("800x900")
 tk_root.title("vGF - zGUI™")
 
 tk_happiness_stat = tkinter.DoubleVar()
@@ -80,17 +80,23 @@ class Ame:
             happiness = 0
 
         stat = get_stat_update("happiness", self._happiness, happiness)
+        affection_bonus = self._affection
         if stat[2] == 4 and happiness > self._happiness:
-            ame.affection += 3
+            affection_bonus = self._affection + 3
+            get_stat_update("happiness", self._affection, affection_bonus)
         if stat[2] == 3 and happiness > self._happiness:
-            ame.affection += 1
+            affection_bonus = self._affection + 1
+            get_stat_update("happiness", self._affection, affection_bonus)
         if stat[2] == 2 and happiness < self._happiness:
-            ame.affection -= 1
+            affection_bonus = self._affection - 1
+            get_stat_update("happiness", self._affection, affection_bonus)
         if stat[2] == 1 and happiness < self._happiness:
-            ame.affection -= 3
+            affection_bonus = self._affection - 3
+            get_stat_update("happiness", self._affection, affection_bonus)
 
         print(f"Updating stat, happiness changed from {self._happiness} to {happiness}, affection changed from {self._affection} to {self.affection}")
         self._happiness = happiness
+        self._affection = affection_bonus
         tk_happiness_stat.set(self._happiness)
         tk_affection_stat.set(self._affection)
         update_gui_stats()
@@ -109,16 +115,21 @@ class Ame:
 
         stat = get_stat_update("affection", self._affection, affection)
         if stat[2] == 4 and affection > self._affection:
-            ame.happiness += 3
+            happiness_bonus = self._happiness + 3
+            get_stat_update("happiness", self._happiness, happiness_bonus)
         if stat[2] == 3 and affection > self._affection:
-            ame.happiness += 1
+            happiness_bonus = self._happiness + 1
+            get_stat_update("happiness", self._happiness, happiness_bonus)
         if stat[2] == 2 and affection < self._affection:
-            ame.happiness -= 1
+            happiness_bonus = self._happiness - 1
+            get_stat_update("happiness", self._happiness, happiness_bonus)
         if stat[2] == 1 and affection < self._affection:
-            ame.happiness -= 3
+            happiness_bonus = self._happiness - 3
+            get_stat_update("happiness", self._happiness, happiness_bonus)
 
         print(f"Updating stats, happiness changed from {self._happiness} to {self.happiness}, affection changed from {self._affection} to {affection}")
         self._affection = affection
+        self._happiness = happiness_bonus
         tk_happiness_stat.set(self._happiness)
         tk_affection_stat.set(self._affection)
         update_gui_stats()
@@ -134,7 +145,7 @@ class TaskEventTimer(th.Timer):
         while not self.finished.wait(self.interval):
             self.function(*self.args, **self.kwargs)
 
-
+#main function to initialise everything
 def main():
     global active_event
     active_event = False
@@ -152,7 +163,7 @@ def main():
 
 #backend functions
 
-#initiate if no saved file
+#initiate new class if no saved file
 def init_ame():
     global ame
     global tasks
