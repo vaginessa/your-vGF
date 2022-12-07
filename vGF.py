@@ -463,7 +463,6 @@ def complete_task():
         event_button.grid(row=0, column=0)
         for i in task_name_listbox.curselection():
             sel = task_name_listbox.get(i)
-            print("here")
             delete_task(sel)
 
 #fail task event
