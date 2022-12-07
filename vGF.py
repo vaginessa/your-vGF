@@ -24,7 +24,6 @@ from ctypes import byref
 
 #declare assets and variables
 tk_root = Tk()
-tk_root.geometry("800x900")
 tk_root.title("vGF - zGUI™")
 
 tk_happiness_stat = tkinter.DoubleVar()
@@ -433,6 +432,8 @@ def complete_task():
         task_entry_frame.grid_forget()
         task_list_frame.grid_forget()
         task_list_btn_frame.grid_forget()
+        event_button_yes.grid_forget()
+        event_button_no.grid_forget()
 
         if ame.happiness >= 50:
             r = random.choice(os.listdir(complete_kangel))
@@ -461,6 +462,8 @@ def fail_task():
         task_entry_frame.grid_forget()
         task_list_frame.grid_forget()
         task_list_btn_frame.grid_forget()
+        event_button_yes.grid_forget()
+        event_button_no.grid_forget()
 
         if ame.happiness >= 50:
             r = random.choice(os.listdir(fail_kangel))
