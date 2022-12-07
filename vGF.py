@@ -20,8 +20,6 @@ from ctypes import POINTER
 from ctypes import byref
 
 
-
-
 #declare assets and variables
 tk_root = Tk()
 tk_root.title("vGF - zGUI™")
@@ -135,6 +133,7 @@ class Ame:
         update_gui_stats()
         write_save()
 
+#timer class
 class RandomEventTimer(th.Timer):
     def run(self):
         while not self.finished.wait(self.interval):
@@ -238,10 +237,12 @@ def dev_console():
             random_event_timer.cancel()
             break
 
+#add character name on new save
 def update_char_name(name):
     ame.name = name
     write_save()
 
+#create task and update gui
 def create_task(name, time):
     for task in tasks:
         if name in task["name"]:
@@ -255,6 +256,7 @@ def create_task(name, time):
     init_task_elements()
     write_save()
 
+#delete task and update gui
 def delete_task(task_name):
     del_task = (next((index for (index, d) in enumerate(tasks) if d["name"] == task_name), None))
     if isinstance(del_task, int):
@@ -263,6 +265,7 @@ def delete_task(task_name):
         print("Task not found")
     write_save()
 
+#check for stage changes and update gui accordingly
 def get_stat_update(stat_type, old, new):
     stages = ["0", "1-25", "25-50", "50-75", "75-99", "100"]
     old_stage = bisect.bisect([1, 25, 50, 75, 100], old)
@@ -276,6 +279,7 @@ def get_stat_update(stat_type, old, new):
             affection_event(0)
     return [stat_type, old_stage, new_stage]
 
+#random event handler
 def start_random_event(interval):
     global random_event_timer
     random_event_timer = RandomEventTimer(interval, random_event)
@@ -293,6 +297,7 @@ def start_task_timer(name, time):
     task_event_timer = TaskEventTimer(time, task_event, [name])
     task_event_timer.start()
 
+#task timer handler
 def task_event(name):
     global active_event
     while active_event:
@@ -304,9 +309,8 @@ def task_event(name):
 def affection_event(stage):
     if stage == 5:
         i = 0
-        while i < 100:
+        while True:
             ctypes.windll.user32.MessageBoxW(0, "I LOVE YOU <3 UWU", 1)
-            i += 1
     if stage == 0:
         affection_event_gui()
 
@@ -334,6 +338,7 @@ def bsod():
 #tkinter elements
 main_dialogue_text = ""
 
+#initialise gui
 def init():
     global main_sprite
     notice_box.grid(row=99, column=0)
@@ -349,7 +354,7 @@ def init():
         name_button.grid(row=3, column=0)
     else:
         init_main()
-
+#submit name in gui to set name for new save
 def submit_name():
     if name_entry.get():
         update_char_name(name_entry.get())
@@ -357,6 +362,7 @@ def submit_name():
         name_entry.grid_forget()
         init_main()
     
+#initialise main frame
 def init_main():
     stat_bar_frame.grid(row=0, column=0)
     main_frame.grid(row=1, column=0)
@@ -368,6 +374,7 @@ def init_main():
     ame.happiness += 0 #refresh stat to update
     init_task_elements()
 
+#update status bars
 def update_gui_stats():
     happiness_sprite_display = tkinter.Label(stat_bar_frame, image = happy_sprite)
     happiness_sprite_display.grid(row=0, column=0,  padx = 10, pady = 10)
@@ -378,6 +385,7 @@ def update_gui_stats():
     happiness_bar.config(variable = tk_happiness_stat)
     affection_bar.config(variable = tk_affection_stat)
 
+#update main frame
 def update_main(stage):
     global main_sprite
     notice_box.config(text="")
@@ -390,6 +398,7 @@ def update_main(stage):
     main_dialogue_label.config(text = main_dialogue_text)
     main_dialogue_label.grid(row=1, column=0)
 
+#initialise task frame
 def init_task_elements():
     task_frame.grid_forget()
     task_name_listbox.delete(0, END)
@@ -416,7 +425,7 @@ def init_task_elements():
     task_complete_button.grid(row=0, column=0)
     task_fail_button.grid(row=0, column=1)
 
-
+#submit task to be created
 def submit_task():
     if task_name_entry.get() and task_time_entry.get():
         message = create_task(task_name_entry.get(), task_time_entry.get())
@@ -425,6 +434,7 @@ def submit_task():
         else:
             notice_box.config(text="")
 
+#complete task event
 def complete_task():
     global main_sprite
     if task_name_listbox.curselection():
@@ -455,6 +465,7 @@ def complete_task():
             print("here")
             delete_task(sel)
 
+#fail task event
 def fail_task():
     global main_sprite
     if task_name_listbox.curselection():
@@ -483,7 +494,8 @@ def fail_task():
         for i in task_name_listbox.curselection():
             sel = task_name_listbox.get(i)
             delete_task(sel)
-    
+
+#task time's up event frame
 def task_gui_event(name):
     global main_sprite
     global active_event
@@ -510,6 +522,7 @@ def task_gui_event(name):
 
     active_event = True
 
+#random event frame
 def random_event_gui():
     global main_sprite
     global active_event
@@ -538,7 +551,7 @@ def random_event_gui():
 
     active_event = True
 
-
+#complete event handler
 def complete_event(status):
     global active_event
     event_frame.grid_forget()
@@ -563,6 +576,7 @@ def complete_event(status):
     active_event = False
     init_task_elements()
 
+#when affection reaches 0
 def affection_event_gui():
     global main_sprite
     task_frame.grid_forget()
@@ -580,7 +594,7 @@ def affection_event_gui():
     event_button.config(text="Please don't hurt me", command= lambda: complete_event("bsod"))
     event_button.grid(row=0, column=0)
 
-    
+#initialise dev console
 def init_console():
     console_frame.grid(row=1, column=1)
     console_title.grid(row=1, column=0)
@@ -589,6 +603,7 @@ def init_console():
     console_entry.grid(row=4, column=0)
     console_button.grid(row=5, column=0)
 
+#dev console commands handler
 def submit_command():
     for i in console_listbox.curselection():
         sel = console_listbox.get(i)
