@@ -77,19 +77,20 @@ class Ame:
             happiness = 0
 
         stat = get_stat_update("happiness", self._happiness, happiness)
+
         affection_bonus = self._affection
         if stat[2] == 4 and happiness > self._happiness:
             affection_bonus = self._affection + 3
-            get_stat_update("happiness", self._affection, affection_bonus)
+            get_stat_update("affection", self._affection, affection_bonus)
         if stat[2] == 3 and happiness > self._happiness:
             affection_bonus = self._affection + 1
-            get_stat_update("happiness", self._affection, affection_bonus)
+            get_stat_update("affection", self._affection, affection_bonus)
         if stat[2] == 2 and happiness < self._happiness:
             affection_bonus = self._affection - 1
-            get_stat_update("happiness", self._affection, affection_bonus)
+            get_stat_update("affection", self._affection, affection_bonus)
         if stat[2] == 1 and happiness < self._happiness:
             affection_bonus = self._affection - 3
-            get_stat_update("happiness", self._affection, affection_bonus)
+            get_stat_update("affection", self._affection, affection_bonus)
 
         print(f"Updating stat, happiness changed from {self._happiness} to {happiness}, affection changed from {self._affection} to {affection_bonus}")
         self._happiness = happiness
@@ -291,13 +292,13 @@ def random_event():
         time.sleep(5)
     random_event_gui()
 
+#task timer handler
 def start_task_timer(name, time):
     global task_event_timer
     time = round(float(time) * 60)
     task_event_timer = TaskEventTimer(time, task_event, [name])
     task_event_timer.start()
 
-#task timer handler
 def task_event(name):
     global active_event
     while active_event:
@@ -591,7 +592,7 @@ def affection_event_gui():
     main_sprite_display.grid(row=0, column=0)
 
     event_frame.grid(row=3, column=0)
-    event_button.config(text="Please don't hurt me", command= lambda: complete_event("bsod"))
+    event_button.config(text="Please don't hurt me...\nTHIS WILL BSOD YOUR COMPUTER", command= lambda: complete_event("bsod"))
     event_button.grid(row=0, column=0)
 
 #initialise dev console
