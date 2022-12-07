@@ -2,7 +2,7 @@
 
 Interactive reminder app with a virtual girlfriend to list, remind, and keep track of tasks. 
 
-To run the program, press play button in python/run .exe file.
+To run the program, run .exe file.
 Initialization menu, asking for the name you would like to give your vGF. Simply input the name you would like and press the button.
 Top two bars signify vGF's happiness level (shown by the smiley face/sad face), and her affection level (shown by the heart).
 User to enter their task name into the "Enter Task Name" bar, along with the time user would like to give themselves to complete the task.
