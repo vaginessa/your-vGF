@@ -1,3 +1,5 @@
+**We do not own any of the images used in the game, this is just a 4fun non-commerical project**, rights go to their respective owners, namely the game [Needy Streamer Overload](https://store.steampowered.com/app/1451940/NEEDY_STREAMER_OVERLOAD/)
+
 #### libraries needed: pillow
 
 Interactive reminder app with a virtual girlfriend to list, remind, and keep track of tasks. 
