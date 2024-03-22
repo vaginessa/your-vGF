@@ -2,9 +2,13 @@
 ## rework: 
 
 ✅ translate dialogues.json to DE
+
 ⭕ finetune dialogues
-⭕ translate strings in py file 
+
+⭕ translate strings in py file
+
 ⭕ exchange grfx
+
 ⭕ overlook logic etc 🔍
 
 ----- 
