@@ -1,55 +1,55 @@
 {
-    "small_talk": [
-        "Fun fact~! A good baby that finishes their work gets a reward from me~",
-        "Did you know sea otters hold hands when they sleep?",
-        "A crocodile cannot stick its tongue out :>",
-        "To the guy who invented zero, thanks for nothing.",
-        "Did you hear about the restaurant on the moon? I heard the food was good but it had no atmosphere.",
-        "I do not trust stairs because they're always up to something.",
-        "Did you know that, I, Love, You?",
-        "Being in love is like being high on drugs.",
-        "I never knew what happiness was until I met you.",
-        "I love you, I love you, I love you, I love you, I love you, I love you, I love you, I love you, I love you...",
-        "Its so nice to feel special for once... To love someone more than anything in the world and have them love me back.",
-        "Everybody has a little raincloud form time to time. But sad poems can give the little raincloud a lil' hug! To make a nice happy rainbow!"
+    "Smalltalk": [
+        "Lustige Tatsache ~! Ein gutes Baby, das seine Arbeit beendet, bekommt eine Belohnung von mir ~ ",
+        "Wusstest du, dass Seeotter Hände halten, wenn sie schlafen?",
+        "Ein Krokodil kann seine Zunge nicht herausstrecken :>",
+        "An den Typen, der Zero erfunden hat, danke für nichts.",
+        "Hast du von dem Restaurant auf dem Mond gehört? Ich hörte, dass das Essen gut war, aber es hatte keine Atmosphäre.",
+        "Ich traue Treppen nicht, weil sie immer etwas vorhaben.",
+        "Wusstest du das, ich, Liebes, du?",
+        "Verliebt zu sein ist wie Drogenrausch.",
+        "Ich wusste nie, was Glück ist, bis ich dich traf.",
+        "Ich liebe dich, ich liebe dich, ich liebe dich, ich liebe dich, ich liebe dich, ich liebe dich, ich liebe dich, ich liebe dich, ich liebe dich...",
+        "Es ist so schön, sich einmal besonders zu fühlen... Jemanden mehr als alles andere auf der Welt zu lieben und ihn mich zurück lieben zu lassen.",
+        "Jeder hat von Zeit zu Zeit eine kleine Regenwolkenform. Aber traurige Gedichte können die kleine Regenwolke ein wenig umarmen! Um einen schönen glücklichen Regenbogen zu machen!"
     ],
-    "asking": [
-        "Did my darling finish his work?",
-        "Baby, finished your work?",
-        "Baby I'm lonely! Have you finished you work yet?",
-        "Baby baby, finished your work? I'm wonewy without you",
-        "Hope you're on your way to finishing baby, I've got something for you~",
-        "Baby I miss you!!! Have you finished?",
-        "Uuu! Baby are you done yet?"
+    "Fragen": [
+        "Hat mein Liebling seine Arbeit beendet?",
+        "Baby, hast du deine Arbeit beendet?",
+        "Baby, ich bin einsam! Hast du deine Arbeit schon beendet?",
+        "Baby Baby, hast du deine Arbeit beendet? Ohne dich bin ich glücklich",
+        "Ich hoffe, du bist auf dem Weg, Baby fertig zu machen, ich habe etwas für dich ~",
+        "Baby, ich vermisse dich!!! Bist du fertig?",
+        "Uuuuh! Baby, bist du schon fertig?"
     ],
-    "completed": [
-        "Good baby!",
-        "You cutie! A reward for you! Hehe~",
-        "I love you~!",
-        "My capable lover~ Kyaa~~",
-        "Come ere my baby~!",
-        "Awww~ Lookie you~",
-        "My smartie baby~",
-        "My baby deserves a reward~!",
-        "You make me unbelievably proud, today and every day."
+    "abgeschlossen": [
+        "Gutes Baby!",
+        "Du Süße! Eine Belohnung für dich! Hihi~",
+        "Ich liebe dich ~!",
+        "Meine fähige Geliebte ~ Kyaa ~~",
+        "Komm, mein Baby ~!",
+        "Awww ~ Schau dich an ~",
+        "Mein schlaues Baby ~",
+        "Mein Baby verdient eine Belohnung ~!",
+        "Du machst mich unglaublich stolz, heute und jeden Tag."
     ],
-    "failed": [
-        "Darling, you're testing my patience...",
-        "Tch. And once again, you never fail to disappoint me.",
-        "There is something seriously wrong with you.",
-        "This is how you treat me after everything I've done for you?",
-        "Bad baby.",
-        "Guess you don't want me after all."
+    "ausgefallen": [
+        "Liebling, du testest meine Geduld...",
+        "Tsch. Und noch einmal, du enttäuschst mich immer wieder.",
+        "Mit dir stimmt etwas ernsthaft nicht.",
+        "So behandelst du mich nach allem, was ich für dich getan habe?",
+        "Böses Baby.",
+        "Schätze, du willst mich doch nicht."
     ],
-    "questions": [
-        "Do you love me?",
-        "Will you be there for me?",
-        "Do you think I'm cute?",
-        "Do you think I'm pretty?",
-        "Would you be happy if I was next to you right now?",
-        "Have you been loyal?",
-        "Do you want to marry me?",
-        "Do you want to be together forever?",
-        "Do you even love me?"
+    "Fragestellungen": [
+        "Liebst du mich?",
+        "Wirst du für mich da sein?",
+        "Findest du mich süß?",
+        "Findest du mich hübsch?",
+        "Würdest du dich freuen, wenn ich jetzt neben dir wäre?",
+        "Warst du loyal?",
+        "Willst du mich heiraten?",
+        "Willst du für immer zusammen sein?",
+        "Liebst du mich überhaupt?"
     ]
 }
